@@ -5,10 +5,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 function Product() {
-  const { id } = useParams(); //lấy id từ url
+  let { id } = useParams(); //lấy id từ url
+
   const [product, setProduct] = useState(); //lấy sản phẩm từ api
   const [sl, setSL] = useState(1); //lấy số lượng sản phẩm người dùng muốn thêm vào giỏ hàng
-  const idUserString = localStorage.getItem("_id");
+  const idUserString = localStorage.getItem("productid");
 
   //hàm tăng số lượng sản phẩm
   const HandleIncreaseSL = () => {
@@ -23,10 +24,10 @@ function Product() {
   //lấy thông tin sản phẩm
   useEffect(() => {
     axios
-      .get(`https://dialuxury.onrender.com/product/${id}`)
+      .get(`http://localhost:3001/product/${id}`)
       .then((response) => {
         setProduct(response.data);
-        console.log("Sản phẩm");
+
         console.log(response.data);
       })
       .catch((error) => {
@@ -37,7 +38,7 @@ function Product() {
   //thêm sản phẩm vào giỏ hàng
   const AddToCart = async () => {
     await axios
-      .post("https://dialuxury.onrender.com/cart", {
+      .post("http://localhost:3001/product/cart", {
         userId: idUserString,
         productid: product.productid,
         soluong: sl,
@@ -109,7 +110,6 @@ function Product() {
             Mua hàng <br />
           </Button>
         </Col>
-        ))}
       </Row>
       <div>
         <h3>Thông số</h3>
