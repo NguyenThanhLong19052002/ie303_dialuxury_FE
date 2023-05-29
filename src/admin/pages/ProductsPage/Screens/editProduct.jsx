@@ -118,7 +118,7 @@ const EditProduct = () => {
       });
   };
   return (
-    <Container style={{width:"1300px"}}>
+    <Container style={{ width: "1300px" }}>
       <Row className="d-flex justify-content-center">
         <Col
           md={6}

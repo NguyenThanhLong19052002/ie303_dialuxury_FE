@@ -35,54 +35,8 @@ function ProductsPage() {
 
   let navigate = useNavigate();
 
-  //Xoá sản phẩm:
-  // const { id } = useParams();
-  // console.log({ id });
-
-  // const handleEditClick = ({ id }) => {
-  //   // Gọi API để lấy thông tin sản phẩm
-  //   axios
-  //     .get(`http://localhost:3001/product/${id}`)
-  //     .then((response) => {
-  //       // Cập nhật state với thông tin sản phẩm
-  //       console.log(response.data);
-  //       setProducts(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
-  const deleteProduct = (id) => {
-    axios
-      .delete(`http://localhost:3001/product/${id}`)
-      .then((response) => {
-        //Load lại các sản phẩm:
-        loadProducts();
-        console.log("Sản phẩm đã được xóa thành công");
-      })
-      .catch((error) => {
-        // Xử lý lỗi từ API
-        console.error("Lỗi khi xóa sản phẩm:", error);
-      });
-  };
-
   return (
     <Container fluid>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginRight: "20px",
-          marginTop: "20px",
-        }}
-      >
-        <Link to="/admin/productsPage/add">
-          {" "}
-          <Button variant="primary">Thêm mới</Button>{" "}
-        </Link>
-      </div>
-
       <div className={"border-l-3 py-4"}>
         <TableContainer component={Paper} className={styles.table}>
           <Table sx={{ minWidth: 1200 }} aria-label="simple table">
@@ -98,49 +52,37 @@ function ProductsPage() {
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
-                  Mã sản phẩm
+                  Mã TT
                 </TableCell>
                 <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
-                  Sản phẩm
+                  Mã HĐ
                 </TableCell>
                 <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
-                  Ảnh sản phẩm
+                  Tên KH
                 </TableCell>
                 <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
-                  Loại sản phẩm
+                  Ngày TT
                 </TableCell>
                 <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
-                  Số lượng
+                  Hình thức TT
                 </TableCell>
                 <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
-                  Đơn vị tính
-                </TableCell>
-                <TableCell
-                  className={styles.tableCell + " text-center"}
-                  style={{ fontSize: "16px", fontWeight: "500" }}
-                >
-                  Giá
-                </TableCell>
-                <TableCell
-                  className={styles.tableCell + " text-center"}
-                  style={{ fontSize: "16px", fontWeight: "500" }}
-                >
-                  Hoạt động
+                  Tổng tiền
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -151,7 +93,7 @@ function ProductsPage() {
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       {index + 1}
@@ -160,7 +102,7 @@ function ProductsPage() {
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       {product.productid}
@@ -168,7 +110,7 @@ function ProductsPage() {
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       {product.name}
@@ -176,7 +118,7 @@ function ProductsPage() {
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       <Image
@@ -189,21 +131,16 @@ function ProductsPage() {
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       {product.category}
                     </TableCell>
+
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
-                      }}
-                    ></TableCell>
-                    <TableCell
-                      className={styles.tableCell + " text-center"}
-                      onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       {product.dvt}
@@ -211,33 +148,10 @@ function ProductsPage() {
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
-                        navigate(`/admin/productsPage/${product.productid}`);
+                        navigate(`/paymentView`);
                       }}
                     >
                       {product.price} đ
-                    </TableCell>
-
-                    <TableCell className={styles.tableCell + " text-center"}>
-                      <div className="d-flex">
-                        <Button
-                          variant="warning"
-                          className="me-1"
-                          onClick={() => {
-                            return navigate(
-                              `/admin/productsPage/edit/${product.productid}`
-                            );
-                            // { handleEditClick }
-                          }}
-                        >
-                          Sửa
-                        </Button>{" "}
-                        <Button
-                          variant="danger"
-                          onClick={() => deleteProduct(product.productid)}
-                        >
-                          Xóa
-                        </Button>{" "}
-                      </div>
                     </TableCell>
                   </TableRow>
                 );

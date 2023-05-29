@@ -10,13 +10,31 @@ import Paper from '@mui/material/Paper';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+
 import styles from './service.module.css';
 import Button from 'react-bootstrap/Button';
-
+import ReactPaginate from "react-paginate";
 const Service = () => {
   //Service Types
+
+
   const [tableDataSVT, setTableDataSVT] = useState([]);
+
+  //Pagination SVT
+  const [svtPerPage, setSvtPerPage] = useState(4)
+  const [CsvtPerPage, setCSvtPerPage] = useState(1)
+  const numOfToTalPages = Math.ceil(tableDataSVT.length / svtPerPage);
+  // const pages = [...Array(numOfToTalPages + 1).keys()].slice(1);
+  const indexOfLastSVT = CsvtPerPage*svtPerPage;
+  const indexOfFirstSVT = indexOfLastSVT - svtPerPage;
+  const visibleSVT = tableDataSVT.slice(indexOfFirstSVT, indexOfLastSVT)
+
+ 
+
+  const changePage = ({ selected }) => {
+    setCSvtPerPage(selected + 1);
+  };
+ //
 
   useEffect(() => {
     loadSVT();
@@ -27,6 +45,7 @@ const Service = () => {
       .get('https://dialuxury.onrender.com/serviceType')
       .then((response) => {
         setTableDataSVT(response.data);
+        //console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -53,6 +72,8 @@ const Service = () => {
       .then((data) => data.json())
       .then((data) => setTableData(data));
   }, []);
+
+
 
   return (
     <div className={styles.servicePage}>
@@ -86,7 +107,7 @@ const Service = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableDataSVT.map((tableDataSVT, index) => (
+              {visibleSVT.map((tableDataSVT, index) => (
                 <TableRow
                   key={tableDataSVT.svt_id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -124,6 +145,27 @@ const Service = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        {/* <div style={{display: "flex", float:"right", marginRight:"15px", marginTop:"15px", cursor:"pointer"}}>
+        <span onclick={prevPage}>Prev</span>
+        <p>{pages.map(page => <span kry={page} onClick={() => setCSvtPerPage(page)}>{`  ${page}  `}</span>)}</p>
+        <span onclick={nextPage}>Next</span>
+        </div> */}
+        <ReactPaginate
+        previousLabel={"Prev"}
+        nextLabel={"Next"}
+        pageCount={numOfToTalPages}
+        onPageChange={changePage}
+        containerClassName={"pagination justify-content-center"}
+        pageClassName={"page-item"}
+        pageLinkClassName={"page-link"}
+        previousClassName={"page-item"}
+        previousLinkClassName={"page-link"}
+        nextClassName={"page-item"}
+        nextLinkClassName={"page-link"}
+        breakClassName={"page-item"}
+        breakLinkClassName={"page-link"}
+        activeClassName={"active"}
+      />
       </div>
 
       <div className={styles.datatable}>
@@ -131,23 +173,6 @@ const Service = () => {
           <b>Danh Sách Phiếu Dịch Vụ</b>
         </div>
 
-        {/* <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid getRowId={(row) =>  row.s_id + row.s_name + row.makh + row.s_number + row.s_date}
-        className={styles.datagrid}
-        rows={tableData}
-        columns={columns.concat(actionColumn)}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 7,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
-      />
-    </Box> */}
 
         <TableContainer component={Paper} className={styles.table}>
           <Table sx={{ minWidth: 1200 }} aria-label="a dense table">
@@ -159,9 +184,11 @@ const Service = () => {
                 <TableCell className={styles.tableCell + ' text-center'}>
                   Mã Phiếu
                 </TableCell>
-
                 <TableCell className={styles.tableCell + ' text-center'}>
-                  Khách hàng
+                  Tên Khách Hàng
+                </TableCell>
+                <TableCell className={styles.tableCell + ' text-center'}>
+                  Email
                 </TableCell>
                 <TableCell className={styles.tableCell + ' text-center'}>
                   Ngày lập
@@ -186,7 +213,9 @@ const Service = () => {
                   <TableCell className={styles.tableCell + ' text-center'}>
                     {tableData._id}
                   </TableCell>
-
+                  <TableCell className={styles.tableCell + ' text-center'}>
+                    tên
+                  </TableCell>
                   <TableCell className={styles.tableCell + ' text-center'}>
                     {tableData.makh}
                   </TableCell>
@@ -199,7 +228,7 @@ const Service = () => {
                   <TableCell className={styles.tableCell + ' text-center'}>
                     <div className={styles.cellAction}>
                       <Link
-                        to={`/service/view/${tableData.s_id}`}
+                        to={`/service/view/${tableData._id}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <div className={styles.viewButton}>View</div>
