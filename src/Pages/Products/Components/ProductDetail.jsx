@@ -4,12 +4,17 @@ import { Form, FormControl } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+
+const CART_SESSION_ATTRIBUTE = "cart";
+
 function Product() {
   let { id } = useParams(); //lấy id từ url
 
   const [product, setProduct] = useState(); //lấy sản phẩm từ api
   const [sl, setSL] = useState(1); //lấy số lượng sản phẩm người dùng muốn thêm vào giỏ hàng
   const idUserString = localStorage.getItem("productid");
+
+  // const [cart, setCart] = useState([]);
 
   //hàm tăng số lượng sản phẩm
   const HandleIncreaseSL = () => {
@@ -35,20 +40,46 @@ function Product() {
       });
   }, [id]);
 
+  // const fetchCartItems = async () => {
+  //   await axios
+  //     .get("http://localhost:3001/cart")
+  //     .then((response) => {
+  //       setCart(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   //thêm sản phẩm vào giỏ hàng
   const AddToCart = async () => {
-    await axios
-      .post("http://localhost:3001/product/cart", {
-        userId: idUserString,
+    const cartItem = {
+      product: {
         productid: product.productid,
-        soluong: sl,
-      })
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        category: product.category,
+        dvt: product.unit,
+        quality: product.quality,
+        color: product.color,
+        mass: product.mass,
+        size: product.size
+      },
+      totalPrice: product.price * sl,
+      quantity: sl,
+    };
+    await axios
+      .post("http://localhost:3001/cart/add", cartItem)
       .then((res) => {
         console.log("Mua thành công");
+        console.log(res.data);
+        // fetchCartItems();
+        // console.log(cart);
+        // localStorage.setItem("cartItem", JSON.stringify(cart));
       })
       .catch((e) => {
         console.log("Mua thất bại");
-        console.log(e);
       });
   };
 
