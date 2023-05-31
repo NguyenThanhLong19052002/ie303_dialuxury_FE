@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useFormik } from 'formik';
-import '../styles/style.css';
-import { registerValidate, updateProfileValidate } from './validate/validate';
-import { toast, Toaster } from 'react-hot-toast';
-import { getUserbyId, updateUser } from '../helpers/helper';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import "../styles/style.css";
+import { registerValidate, updateProfileValidate } from "./validate/validate";
+import { toast, Toaster } from "react-hot-toast";
+import { getUserbyId, updateUser } from "../helpers/helper";
 function Profile() {
   const { _id } = useParams();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAdress] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAdress] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     // This function will run once when the component mounts.
@@ -39,17 +39,17 @@ function Profile() {
       console.log(values);
       try {
         await toast.promise(updateUser(values, _id), {
-          loading: 'Đang cập nhật',
+          loading: "Đang cập nhật",
           success: <b>Cập nhật thành công!</b>,
           error: <b>Có lỗi xảy ra, vui lòng thử lại</b>,
         });
       } catch (error) {
-        if (error.message === 'Email already exists') {
+        if (error.message === "Email already exists") {
           toast.error(
             <b>Email đã được sử dụng, vui lòng nhập một email khác</b>
           );
         }
-        if (error.message === 'Phone already exists') {
+        if (error.message === "Phone already exists") {
           toast.error(
             <b>Số điện thoại đã được sử dụng, vui lòng nhập một số khác</b>
           );
@@ -71,7 +71,7 @@ function Profile() {
 
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('name')}
+                {...formik.getFieldProps("name")}
                 type="text"
                 class="form-control"
                 id="floatingName"
@@ -81,7 +81,7 @@ function Profile() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('email')}
+                {...formik.getFieldProps("email")}
                 type="email"
                 class="form-control"
                 id="floatingEmail"
@@ -91,7 +91,7 @@ function Profile() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('phone')}
+                {...formik.getFieldProps("phone")}
                 type="tel"
                 pattern="^0\d{9,10}$"
                 class="form-control"
@@ -102,7 +102,7 @@ function Profile() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('address')}
+                {...formik.getFieldProps("address")}
                 type="text"
                 class="form-control"
                 id="floatingInput"
