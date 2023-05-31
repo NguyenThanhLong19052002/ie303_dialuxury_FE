@@ -64,6 +64,30 @@ Content-Type: application/json
       "mass": "Mass 2",
       "size": "Size 2"
     },
+        {
+      "productId": "P002",
+      "name": "Product 2",
+      "image": "image2.jpg",
+      "price": 15.99,
+      "category": "Category 2",
+      "unit": "Unit 2",
+      "quality": "Quality 2",
+      "color": "Color 2",
+      "mass": "Mass 2",
+      "size": "Size 2"
+    },
+        {
+      "productId": "P002",
+      "name": "Product 2",
+      "image": "image2.jpg",
+      "price": 15.99,
+      "category": "Category 2",
+      "unit": "Unit 2",
+      "quality": "Quality 2",
+      "color": "Color 2",
+      "mass": "Mass 2",
+      "size": "Size 2"
+    },
     {
       "productId": "P003",
       "name": "Product 3",
