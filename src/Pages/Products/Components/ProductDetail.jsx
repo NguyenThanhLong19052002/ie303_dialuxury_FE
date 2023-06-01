@@ -4,14 +4,15 @@ import { Form, FormControl } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-const CART_SESSION_ATTRIBUTE = "cart";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 function Product() {
   let { id } = useParams(); //lấy id từ url
 
   const [product, setProduct] = useState(); //lấy sản phẩm từ api
   const [sl, setSL] = useState(1); //lấy số lượng sản phẩm người dùng muốn thêm vào giỏ hàng
+  const [openSnackbar, setOpenSnackbar] = useState(false); //lưu trạng thái của Snackbar
   const idUserString = localStorage.getItem("productid");
 
   // const [cart, setCart] = useState([]);
@@ -24,6 +25,11 @@ function Product() {
   //hàm giảm số lượng sản phẩm
   const HandleDecreaseSL = () => {
     if (sl !== 1) setSL((prevSL) => prevSL - 1);
+  };
+
+  //hàm đóng Snackbar
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   //lấy thông tin sản phẩm
@@ -64,7 +70,7 @@ function Product() {
         quality: product.quality,
         color: product.color,
         mass: product.mass,
-        size: product.size
+        size: product.size,
       },
       totalPrice: product.price * sl,
       quantity: sl,
@@ -74,12 +80,14 @@ function Product() {
       .then((res) => {
         console.log("Mua thành công");
         console.log(res.data);
+        setOpenSnackbar(true); // Mở Snackbar khi thêm vào giỏ hàng thành công
         // fetchCartItems();
         // console.log(cart);
         // localStorage.setItem("cartItem", JSON.stringify(cart));
       })
       .catch((e) => {
         console.log("Mua thất bại");
+        console.error(e);
       });
   };
 
@@ -142,6 +150,22 @@ function Product() {
           </Button>
         </Col>
       </Row>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000} // Thời gian tự động đóng Snackbar (ms)
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Vị trí hiển thị
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity="success" // Loại thông báo (success, error, warning, info)
+          sx={{ width: "100%" }}
+          elevation={6}
+          variant="filled"
+        >
+          Đã thêm sản phẩm vào giỏ hàng!
+        </MuiAlert>
+      </Snackbar>
       <div>
         <h3>Thông số</h3>
         <Row>

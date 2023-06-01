@@ -9,8 +9,6 @@ import { useEffect, useState } from "react";
 import images from "../../assets/images";
 import ConfirmationModal from "./Components/ConfirmationModal";
 
-const CART_SESSION_ATTRIBUTE = "cart";
-
 function Cart() {
   //lấy _id của người dùng trong localStorage
   // const userId = localStorage.getItem("_id");
@@ -21,15 +19,18 @@ function Cart() {
   //tạo biến lưu trạng thái hiển thị hộp thoại thông báo
   const [showModal, setShowModal] = useState(false);
 
-  //biến trạng thái cho nut xoá giỏ hàng
+  //biến trạng thái cho nút xoá giỏ hàng
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   //lấy các sản phẩm từ trong giỏ hàng hiện ra
   useEffect(() => {
+    if(cart.length == 0 ) setIsButtonDisabled(true);
     //lấy dữ liệu các sp trong giỏ hàng
     fetchCartItems();
     //tính tổng tiền tất cả sp trong giỏ hàng
     calculateTotalPrice();
+
+    // localStorage.setItem("cartItem", JSON.stringify(cart));
   });
 
   // useEffect(() => {

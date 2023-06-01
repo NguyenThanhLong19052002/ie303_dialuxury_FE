@@ -12,10 +12,35 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from "axios";
 
 function Header() {
+  const [cartItemCount, setCartItemCount] = useState(0); //đếm số sp có trong giỏ hàng
+  const [cart, setCart] = useState([]);
   const token = localStorage.getItem('token');
   const _id = localStorage.getItem('_id');
+
+  useEffect(() => {
+    // setCartItemCount(0);
+    // const cartItems = JSON.parse(localStorage.getItem('cartItem'));
+    fetchCartItems();
+    const count = cart.length > 0 ? cart.length : 0;
+    setCartItemCount(count);
+  });
+
+  const fetchCartItems = async () => {
+    await axios
+      .get("http://localhost:3001/cart")
+      .then((response) => {
+        setCart(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('_id');
     localStorage.removeItem('token');
@@ -88,7 +113,7 @@ function Header() {
                   <div className={styles.item}>
                     <ShoppingCartIcon className={styles.icon} />
                     <div className={styles.action} href="#">
-                      Giỏ hàng
+                      Giỏ hàng {cartItemCount > 0 && <span className={styles.cartItemCount}>{cartItemCount}</span>}
                     </div>
                   </div>
                 </Link>
