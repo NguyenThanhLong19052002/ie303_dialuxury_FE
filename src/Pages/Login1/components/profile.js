@@ -2,23 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import "../styles/style.css";
-import { registerValidate, updateProfileValidate } from "./validate/validate";
+import { updateProfileValidate } from "./validate/validate";
 import { toast, Toaster } from "react-hot-toast";
 import { getUserbyId, updateUser } from "../helpers/helper";
 function Profile() {
-  const { _id } = useParams();
+  const _id = localStorage.getItem("userId");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [address, setAdress] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     // This function will run once when the component mounts.
     let profilePromise = getUserbyId(_id);
     profilePromise.then(function (res) {
-      let { email, name, address, phone } = res.data;
+      let { email, name, address, phoneNumber } = res.data;
+      // console.log(res.data);
       setName(name);
-      setPhone(phone);
+      setPhone(phoneNumber);
       setEmail(email);
       setAdress(address);
     });
@@ -28,7 +29,7 @@ function Profile() {
     initialValues: {
       email: email,
       address: address,
-      phone: phone,
+      phoneNumber: phoneNumber,
       name: name,
     },
     enableReinitialize: true,
@@ -91,7 +92,7 @@ function Profile() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps("phone")}
+                {...formik.getFieldProps("phoneNumber")}
                 type="tel"
                 pattern="^0\d{9,10}$"
                 class="form-control"

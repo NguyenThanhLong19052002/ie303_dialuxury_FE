@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 axios.defaults.baseURL = "https://dialuxury.onrender.com";
 export async function registerUser(credentials) {
   try {
@@ -51,8 +51,8 @@ export async function sentOTP(email) {
 }
 export async function getUserbyId(_id) {
   try {
-    const { data } = await axios.get(`/userid/${_id}`);
-    return Promise.resolve({ data });
+    const response = await axios.get(`http://localhost:3001/user/${_id}`);
+    return Promise.resolve(response);
   } catch (error) {
     return Promise.reject({ error: "Can not get user" });
   }
@@ -104,9 +104,14 @@ export function myFunction() {
 }
 export async function updateUser(user, _id) {
   try {
-    const token = await localStorage.getItem("token");
+    // const token = await localStorage.getItem("token");
 
-    const { data, status } = await axios.put("/updateuser", { user, _id });
+    // console.log({ user });
+    const { data, status } = await axios.patch(
+      `http://localhost:3001/user/${_id}`,
+      user
+    );
+    // console.log(data);
     return Promise.resolve({ data });
   } catch (error) {
     if (

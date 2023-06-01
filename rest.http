@@ -16,8 +16,8 @@ POST http://localhost:3001/user/signup
 Content-Type: application/json
 
 {
-    "name": "Đạiiiiiiiiiiiiiiiiiiii",
-    "email": "02s153@gm.uit.edu.vn",
+    "name": "Lê Minh Đại",
+    "email": "louistart0ggy@gmail.com",
     "password": "123456789",
     "gender":"Nữ",
     "phoneNumber": "0123456789",
@@ -27,7 +27,7 @@ Content-Type: application/json
 
 
 ###Lấy thông tin user dựa vào id /user/:id
-GET  http://localhost:3001/user/64742a1422be3a2b49ac76c6
+GET  http://localhost:3001/user/6477591db9fc981b548a9e0c
 
 ### sửa thông tin user dựa vào id /user/:id
 PATCH  http://localhost:3001/user/64742a1422be3a2b49ac76c6
