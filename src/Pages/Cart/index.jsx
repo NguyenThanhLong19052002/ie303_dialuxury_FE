@@ -1,32 +1,40 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import Product from "./Components/Product";
 import Bill from "./Components/Bill";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import images from "../../assets/images";
+import ConfirmationModal from "./Components/ConfirmationModal";
 
 const CART_SESSION_ATTRIBUTE = "cart";
 
 function Cart() {
-    
-
   //lấy _id của người dùng trong localStorage
-  const userId = localStorage.getItem("_id");
+  // const userId = localStorage.getItem("_id");
 
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  //tạo biến lưu trạng thái hiển thị hộp thoại thông báo
+  const [showModal, setShowModal] = useState(false);
+
+  //biến trạng thái cho nut xoá giỏ hàng
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   //lấy các sản phẩm từ trong giỏ hàng hiện ra
   useEffect(() => {
     //lấy dữ liệu các sp trong giỏ hàng
     fetchCartItems();
-  }, []);
-
-  useEffect(() => {
+    //tính tổng tiền tất cả sp trong giỏ hàng
     calculateTotalPrice();
-  }, [cart]);
+  });
+
+  // useEffect(() => {
+
+  // });
 
   const fetchCartItems = async () => {
     await axios
@@ -42,46 +50,67 @@ function Cart() {
 
   const calculateTotalPrice = () => {
     let total = 0;
-    if (cart !== undefined) {
-        cart.forEach((item) => {
-          total += item.totalPrice;
-        });
-      }
+    if (cart.length > 0) {
+      setIsButtonDisabled(false);
+      cart.forEach((item) => {
+        total += item.totalPrice;
+      });
+    }
     setTotalPrice(total);
   };
 
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/cart")
-//       .then((response) => {
-//         setCart(response.data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   });
+  const handleClearCart = () => {
+    setShowModal(true);
+  };
+
+  //gọi api xóa tất cả sản phẩm trong giỏ hàng
+  const handleConfirmDelete = async () => {
+    try {
+      await axios.delete("http://localhost:3001/cart/clear");
+      // setShowSuccessAlert(true);
+      setIsButtonDisabled(true);
+    } catch (error) {
+      // setShowErrorAlert(true);
+      console.error(error);
+    }
+    setShowModal(false);
+  };
+
+  //tắt hộp thoại khi nhấn nút Hủy
+  const handleCancelDelete = () => {
+    setShowModal(false);
+  };
 
   return (
     <div>
-      <h1 className="m-4">Giỏ hàng</h1>
+      <Container fluid>
+        <Row className="align-items-center">
+          <Col xs={12} md={6} className="d-flex-start justify-content-center">
+            <h1 className="m-4">Giỏ hàng</h1>
+          </Col>
+          <Col xs={12} md={6} className="d-flex-start justify-content-center">
+            <Button variant="danger" onClick={handleClearCart} disabled={isButtonDisabled}>
+              Xoá giỏ hàng
+            </Button>
+            <ConfirmationModal
+              show={showModal}
+              title={"Xác nhận"}
+              message="Bạn chắc chắn muốn xóa giỏ hàng?"
+              onConfirm={handleConfirmDelete}
+              onCancel={handleCancelDelete}
+            />
+          </Col>
+        </Row>
+      </Container>
+
       <Container fluid>
         <Row>
           <Col xs="12" md="7">
             <hr />
-            {cart !== undefined && Object.keys(cart.product).length > 0 ? (
+            {cart.length > 0 ? (
               cart.map((item, index) => {
                 return (
-                  <Product
-                    productid={item.product.productid}
-                    image={item.product.image}
-                    name={item.product.name}
-                    price={item.product.price}
-                    category={item.product.category}
-                    soluong={item.product.soluong}
-                    state={item.product.state}
-                    key={item.product.productid}
-                    index={index}
-                  />
+                  <Product product={item.product} soluong={item.quantity} />
                 );
               })
             ) : (
@@ -92,7 +121,7 @@ function Cart() {
             )}
           </Col>
           <Col xs="12" md="5" className="px-5 px-md-3 mt-3">
-            {cart !== undefined && <Bill cart={cart} />}
+            {cart.length > 0 && <Bill cart={cart} total={totalPrice} />}
           </Col>
         </Row>
       </Container>
