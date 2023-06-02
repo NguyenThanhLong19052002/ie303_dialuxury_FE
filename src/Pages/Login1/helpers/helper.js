@@ -3,9 +3,10 @@ import axios from "axios";
 axios.defaults.baseURL = "https://dialuxury.onrender.com";
 export async function registerUser(credentials) {
   try {
+    // console.log(credentials);
     const {
       data: { msg },
-    } = await axios.post("/register", credentials);
+    } = await axios.post("http://localhost:3001/user/signup", credentials);
 
     //send email
 

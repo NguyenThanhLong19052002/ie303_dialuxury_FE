@@ -1,41 +1,41 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/style.css';
-import toast, { Toaster } from 'react-hot-toast';
-import { useFormik } from 'formik';
-import { registerValidate } from './validate/validate';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../helpers/helper';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/style.css";
+import toast, { Toaster } from "react-hot-toast";
+import { useFormik } from "formik";
+import { registerValidate } from "./validate/validate";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../helpers/helper";
 function Register() {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
-      phone: '',
-      confirmPassword: '',
-      name: '',
-      address: '',
+      email: "",
+      password: "",
+      phoneNumber: "",
+      confirmPassword: "",
+      name: "",
+      address: "",
     },
     validate: registerValidate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async function (values) {
-      console.log(values);
+      // console.log(values);
       try {
         await toast.promise(registerUser(values), {
-          loading: 'Đăng ký...',
+          loading: "Đăng ký...",
           success: <b>Đăng ký thành công!</b>,
           error: <b>Không thể đăng ký, vui lòng thử lại</b>,
         });
-        navigate('/login');
+        navigate("/login");
       } catch (error) {
-        if (error.message === 'Email already exists') {
+        if (error.message === "Email already exists") {
           toast.error(
             <b>Email đã được sử dụng, vui lòng nhập một email khác</b>
           );
         }
-        if (error.message === 'Phone already exists') {
+        if (error.message === "Phone already exists") {
           toast.error(
             <b>Số điện thoại đã được sử dụng, vui lòng nhập một số khác</b>
           );
@@ -56,7 +56,7 @@ function Register() {
             <h3 class="text-dark fw-bolder fs-4 mb-2">Tạo tài khoản</h3>
 
             <div class="fw-normal text-muted mb-2">
-              Đã có tài khoản?{' '}
+              Đã có tài khoản?{" "}
               <Link
                 to="/login"
                 class="text-primary fw-bold text-decoration-none"
@@ -71,7 +71,7 @@ function Register() {
 
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('name')}
+                {...formik.getFieldProps("name")}
                 type="text"
                 class="form-control"
                 id="floatingName"
@@ -81,7 +81,7 @@ function Register() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('email')}
+                {...formik.getFieldProps("email")}
                 type="email"
                 class="form-control"
                 id="floatingEmail"
@@ -91,7 +91,7 @@ function Register() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('phone')}
+                {...formik.getFieldProps("phoneNumber")}
                 type="tel"
                 pattern="^0\d{9,10}$"
                 class="form-control"
@@ -102,7 +102,7 @@ function Register() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('address')}
+                {...formik.getFieldProps("address")}
                 type="text"
                 class="form-control"
                 id="floatingInput"
@@ -112,7 +112,7 @@ function Register() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('password')}
+                {...formik.getFieldProps("password")}
                 type="password"
                 class="form-control"
                 id="floatingPassword"
@@ -125,7 +125,7 @@ function Register() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('confirmPassword')}
+                {...formik.getFieldProps("confirmPassword")}
                 type="password"
                 class="form-control"
                 id="floatingConfirmPassword"
