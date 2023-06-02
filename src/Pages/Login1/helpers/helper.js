@@ -3,9 +3,10 @@ import axios from "axios";
 axios.defaults.baseURL = "https://dialuxury.onrender.com";
 export async function registerUser(credentials) {
   try {
+    // console.log(credentials);
     const {
       data: { msg },
-    } = await axios.post("/register", credentials);
+    } = await axios.post("http://localhost:3001/user/signup", credentials);
 
     //send email
 
@@ -37,7 +38,7 @@ export async function verifyLogin({ email, password }) {
     });
     return Promise.resolve(data);
   } catch (error) {
-    return Promise.reject({ error: "Password doesnt match" });
+    return Promise.reject({ error: "Password doesn't match" });
   }
 }
 
@@ -111,7 +112,6 @@ export async function updateUser(user, _id) {
       `http://localhost:3001/user/${_id}`,
       user
     );
-    // console.log(data);
     return Promise.resolve({ data });
   } catch (error) {
     if (

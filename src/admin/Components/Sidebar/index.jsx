@@ -14,8 +14,17 @@ import WarehouseIcon from "@mui/icons-material/Warehouse";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import { useNavigate } from "react-router-dom";
 
 function AdminSidebar() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/login");
+    window.location.reload();
+  };
   return (
     <div className={styles.sidebar}>
       <div className={styles.center}>
@@ -83,7 +92,7 @@ function AdminSidebar() {
 
           <p className={styles.title}>Options</p>
 
-          <li>
+          <li onClick={handleLogout}>
             <ExitToAppIcon className={styles.icon} />
             <span>Logout</span>
           </li>
