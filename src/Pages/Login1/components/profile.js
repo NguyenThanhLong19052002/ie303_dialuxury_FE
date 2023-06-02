@@ -34,8 +34,8 @@ function Profile() {
     },
     enableReinitialize: true,
     validate: updateProfileValidate,
-    validateOnBlur: false,
-    validateOnChange: false,
+    validateOnBlur: true,
+    validateOnChange: true,
     onSubmit: async function (values) {
       console.log(values);
       try {
@@ -87,6 +87,7 @@ function Profile() {
                 class="form-control"
                 id="floatingEmail"
                 placeholder="name@example.com/"
+                disabled
               />
               <label for="floatingEmail">Email </label>
             </div>

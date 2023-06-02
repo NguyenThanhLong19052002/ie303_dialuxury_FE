@@ -37,7 +37,7 @@ export async function verifyLogin({ email, password }) {
     });
     return Promise.resolve(data);
   } catch (error) {
-    return Promise.reject({ error: "Password doesnt match" });
+    return Promise.reject({ error: "Password doesn't match" });
   }
 }
 
@@ -111,7 +111,6 @@ export async function updateUser(user, _id) {
       `http://localhost:3001/user/${_id}`,
       user
     );
-    // console.log(data);
     return Promise.resolve({ data });
   } catch (error) {
     if (
