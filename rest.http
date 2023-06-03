@@ -7,17 +7,13 @@ Content-Type: application/json
     "password": "123456789`"
 }
 
-# test
-# test1
-
-
 ### signup
 POST http://localhost:3001/user/signup
 Content-Type: application/json
 
 {
     "name": "Lê Minh Đại",
-    "email": "20521153@gm.uit.edu.vn",
+    "email": "20521153333@gm.uit.edu.vn",
     "password": "123456789`",
     "gender":"Nữ",
     "phoneNumber": "0123456789",
@@ -38,7 +34,7 @@ Content-Type: application/json
 POST http://localhost:3001/user/20521153@gm.uit.edu.vn/forgot
 
 ###gửi mã code về server
-GET http://localhost:3001/user/20521153@gm.uit.edu.vn/reset?code=342796
+GET http://localhost:3001/user/20521153@gm.uit.edu.vn/reset?code=531514
 
 
 ###khôi phục mật khẩu
@@ -59,7 +55,7 @@ GET http://localhost:3001/user/email/20521153@gm.uit.edu.vn
 GET  import org.springframework.data.mongodb.repository.Query;/6477591db9fc981b548a9e0c
 
 ### sửa thông tin user dựa vào id /user/:id
-PATCH  http://localhost:3001/user/64742a1422be3a2b49ac76c6
+PATCH  http://localhost:3001/user/64796f8a6e78ca3a3abb5a03
 Content-Type:  application/json
 
 {

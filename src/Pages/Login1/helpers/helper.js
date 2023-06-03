@@ -105,11 +105,14 @@ export async function resetPassword(email, newPassword) {
 }
 export async function changePassword({ _id, currentPassword, newPassword }) {
   try {
-    const { data, status } = await axios.put("/changepassword", {
-      _id,
-      currentPassword,
-      newPassword,
-    });
+    const { data, status } = await axios.put(
+      `http://localhost:3001/user/${_id}/change-password`,
+      {
+        _id,
+        currentPassword,
+        newPassword,
+      }
+    );
     return Promise.resolve({ data, status });
   } catch (error) {
     return Promise.reject({ error });
