@@ -4,11 +4,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal";
 
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 
 function Bill({ cart, total }) {
-  //lấy _id của người dùng trong localStorage
-  const Id = localStorage.getItem("_id");
+  //Kiểm tra trạng thái đăng nhập
+  const token = localStorage.getItem("token");
+  //lấy id của người dùng trong localStorage
+  const Id = localStorage.getItem("userId");
 
   const [showModal, setShowModal] = useState(false);
   const [thanhtoan, setThanhtoan] = useState(false);
@@ -17,58 +19,65 @@ function Bill({ cart, total }) {
     setThanhtoan(true);
   };
 
-  const today = new Date(); // Lấy ngày tháng hiện tại
-  const date = today.getDate(); // Lấy ngày
-  const month = today.getMonth() + 1; // Lấy tháng (Lưu ý: Tháng bắt đầu từ 0, do đó cần phải cộng thêm 1)
-  const year = today.getFullYear(); // Lấy năm
+  // const today = new Date(); // Lấy ngày tháng hiện tại
+  // const date = today.getDate(); // Lấy ngày
+  // const month = today.getMonth() + 1; // Lấy tháng (Lưu ý: Tháng bắt đầu từ 0, do đó cần phải cộng thêm 1)
+  // const year = today.getFullYear(); // Lấy năm
 
-  let spList = cart.map((item) => {
-    return {
-      hinhanh: item.product.image,
-      sanpham: item.product.name,
-      loaisp: item.product.category,
-      sl: item.quantity,
-      dvt: item.product.dvt,
-      dongia: item.product.price,
-      thanhtien: item.product.price * item.quantity,
-    };
-  });
+  // let spList = cart.map((item) => {
+  //   return {
+  //     hinhanh: item.product.image,
+  //     sanpham: item.product.name,
+  //     loaisp: item.product.category,
+  //     sl: item.quantity,
+  //     dvt: item.product.dvt,
+  //     dongia: item.product.price,
+  //     thanhtien: item.product.price * item.quantity,
+  //   };
+  // });
 
-  let data = {
-    hinhanh: "",
-    ngaylap: date + "/" + month + "/" + year,
-    tinhtrang: "Đang xử lý",
-    diachigiaohang: "",
-    userId: Id,
-    sanphams: spList,
-  };
+  // let data = {
+  //   hinhanh: "",
+  //   ngaylap: date + "/" + month + "/" + year,
+  //   tinhtrang: "Đang xử lý",
+  //   diachigiaohang: "",
+  //   userId: Id,
+  //   sanphams: spList,
+  // };
 
   const navigate = useNavigate();
   const addOrder = () => {
-    if (!Array.isArray(cart.product)) {
-      setThanhtoan(false);
-      setShowModal(true);
-    } else {
+    if (cart.length > 0) {
+      const item = cart[0];
+      if (item.hasOwnProperty("product")) {
+        // window.location.href = 'http://localhost:3000';
+        navigate("/paymentinfo", {
+          state: { cart, total },
+        });
+      }
+
+      // setThanhtoan(false);
+      // setShowModal(true);
       //refresh lại giỏ hàng (xóa tất cả các sản phẩm có trong giỏ hàng này)
-      axios
-        .post("https://dialuxury.onrender.com/cart/refresh", { userId: Id })
-        .then((response) => {})
-        .catch((error) => {
-          console.log(error);
-        });
+      // axios
+      //   .post("https://dialuxury.onrender.com/cart/refresh", { userId: Id })
+      //   .then((response) => {})
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
       // tạo đơn hàng mới trong order
-      axios
-        .post("https://dialuxury.onrender.com/order", data)
-        .then((response) => {
-          //chuyển hướng tới trang paymentinfo
-          const mahd = response.data.mahd;
-          navigate("/paymentinfo", {
-            state: { mahd },
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // axios
+      //   .post("https://dialuxury.onrender.com/order", data)
+      //   .then((response) => {
+      //     //chuyển hướng tới trang paymentinfo
+      //     const mahd = response.data.mahd;
+      //     navigate("/paymentinfo", {
+      //       state: { mahd },
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     }
   };
 
@@ -94,14 +103,24 @@ function Bill({ cart, total }) {
         </div>
       </div>
       <div className="text-center">
-        <Button variant="primary" onClick={handleThanhtoan} className="w-100" disabled>
-          Thanh toán
-        </Button>
-        <p className="mt-4">
-          Hoặc <Link to="/">tiếp tục mua hàng</Link>
-        </p>
+        {token !== null ? (
+          <div>
+            <Button
+              variant="primary"
+              onClick={handleThanhtoan}
+              className="w-100"
+            >
+              Thanh toán
+            </Button>
+            <p className="mt-4">
+              Hoặc <Link to="/">tiếp tục mua hàng</Link>
+            </p>
+          </div>
+        ) : (
+          <Alert variant="warning">Vui lòng đăng nhập để thanh toán!</Alert>
+        )}
       </div>
-      <ConfirmationModal
+      {/* <ConfirmationModal
         show={showModal}
         title={"Thông báo"}
         message="Giỏ hàng rỗng"
@@ -111,7 +130,7 @@ function Bill({ cart, total }) {
         onCancel={() => {
           setShowModal(false);
         }}
-      />
+      /> */}
       <ConfirmationModal
         show={thanhtoan}
         title={"Xác nhận"}

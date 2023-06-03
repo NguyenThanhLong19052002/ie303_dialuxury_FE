@@ -1,10 +1,18 @@
 ### login
+# POST http://localhost:3001/user/login
+# Content-Type: application/json
+
+# {
+#     "email": "20521153@gm.uit.edu.vn",
+#     "password": "123456789"
+# }
+
 POST http://localhost:3001/user/login
 Content-Type: application/json
 
 {
-    "email": "20521153@gm.uit.edu.vn",
-    "password": "123456789"
+    "email": "chanhchanh01@gmail.com",
+    "password": "Khin@12345678"
 }
 
 # test

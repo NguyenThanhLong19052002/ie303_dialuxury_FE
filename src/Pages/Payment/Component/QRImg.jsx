@@ -1,6 +1,6 @@
 import images from "../../../assets/images/index";
 
-export default ({bank, hoadon, kh}) => {
+export default ({bank, total, name}) => {
     return (
         <div>
             <div className="my-10 d-flex justify-content-center mb-4">
@@ -11,7 +11,7 @@ export default ({bank, hoadon, kh}) => {
                     <label>Nội dung chuyển khoảng:</label>
                 </div>
                 <div className="col">
-                    <span>Thanh toán hóa đơn - {kh.name}</span>
+                    <span>{name} thanh toán hóa đơn</span>
                 </div>
             </div>
             <div className="row mt-2 mb-4">
@@ -19,9 +19,7 @@ export default ({bank, hoadon, kh}) => {
                     <label>Số tiền:</label>
                 </div>
                 <div className="col">
-                    <span>{hoadon.sanphams && hoadon.sanphams.map((sp, total)=>{
-                        return total + sp.thanhtien
-                    }, 0)} ₫</span>
+                    <span style={{ color: "red" }}>{total} ₫</span>
                 </div>
             </div>     
         </div>
