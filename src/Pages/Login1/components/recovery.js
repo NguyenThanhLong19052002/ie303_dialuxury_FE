@@ -1,35 +1,33 @@
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import '../styles/style.css';
-import { useFormik } from 'formik';
-import toast, { Toaster } from 'react-hot-toast';
-import { loginValidate, passwordForgotValidate } from './validate/validate';
-import { resetPassword, verifyLogin } from '../helpers/helper';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useParams } from "react-router-dom";
+import "../styles/style.css";
+import { useFormik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
+import { loginValidate, passwordForgotValidate } from "./validate/validate";
+import { resetPassword, verifyLogin } from "../helpers/helper";
+import { useNavigate } from "react-router-dom";
 function Recovery() {
-  const { _id } = useParams();
+  const email = localStorage.getItem("email");
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      password: '',
-      confirmPassword: '',
+      password: "",
+      confirmPassword: "",
     },
     validate: passwordForgotValidate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async function (values) {
-      console.log(values);
-      let resetPromise = resetPassword({
-        _id,
-        password: values.password,
-      });
+      // console.log(values.password, email);
+      let resetPromise = resetPassword(email, values.password);
       toast.promise(resetPromise, {
-        loading: 'Checking...',
+        loading: "Checking...",
         success: <b>Cập nhật mật khẩu thành công </b>,
         error: <b>Xảy ra lỗi</b>,
       });
       resetPromise.then(function (res) {
-        navigate('/login');
+        localStorage.removeItem("email");
+        navigate("/login");
       });
     },
   });
@@ -46,7 +44,7 @@ function Recovery() {
 
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('password')}
+                {...formik.getFieldProps("password")}
                 type="password"
                 class="form-control"
                 id="floatingPassword"
@@ -59,7 +57,7 @@ function Recovery() {
             </div>
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('confirmPassword')}
+                {...formik.getFieldProps("confirmPassword")}
                 type="password"
                 class="form-control"
                 id="floatingConfirmPassword"

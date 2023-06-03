@@ -1,21 +1,26 @@
-import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useFormik, Formik, Form, Field, ErrorMessage } from 'formik';
-import toast, { Toaster } from 'react-hot-toast';
-import '../styles/style.css';
-import { otpValidate } from './validate/validate.js';
-import { getUserbyId, myFunction, sentOTP, verifyOTP } from '../helpers/helper';
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useFormik, Formik, Form, Field, ErrorMessage } from "formik";
+import toast, { Toaster } from "react-hot-toast";
+import "../styles/style.css";
+import { otpValidate } from "./validate/validate.js";
+import {
+  getUserbyId,
+  getUserByEmail,
+  sentOTP,
+  verifyOTP,
+} from "../helpers/helper";
 
 function Reset() {
   const navigate = useNavigate();
-  const { _id } = useParams();
-  const [email, setEmail] = useState('');
+  const emailLS = localStorage.getItem("email");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     // This function will run once when the component mounts.
-    let forgotPromise = getUserbyId(_id);
+    let forgotPromise = getUserByEmail(emailLS);
     forgotPromise.then(function (res) {
       let { email, otp } = res.data;
       setEmail(email);
@@ -31,31 +36,28 @@ function Reset() {
 
   const formik = useFormik({
     initialValues: {
-      input1: '',
-      input2: '',
-      input3: '',
-      input4: '',
-      input5: '',
-      input6: '',
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+      input6: "",
     },
     validate: otpValidate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async function check(values) {
       const code = `${values.input1}${values.input2}${values.input3}${values.input4}${values.input5}${values.input6}`;
-      console.log(_id, code);
+      // console.log(emailLS, code);
 
-      let otpPromise = verifyOTP({
-        _id,
-        code,
-      });
+      let otpPromise = verifyOTP(emailLS, code);
       toast.promise(otpPromise, {
-        loading: 'Checking...',
+        loading: "Checking...",
         success: <b>Xác thực thành công </b>,
         error: <b>Sai mã xác thực</b>,
       });
       otpPromise.then(function (res) {
-        navigate(`/recovery/${_id}`);
+        navigate(`/recovery/${emailLS}`);
       });
     },
   });
@@ -80,7 +82,7 @@ function Reset() {
               <div class="d-flex align-items-center justify-content-between mt-2">
                 <input
                   type="text"
-                  {...formik.getFieldProps('input1')}
+                  {...formik.getFieldProps("input1")}
                   className="form-control"
                   maxLength="1"
                   pattern="[0-9]"
@@ -90,7 +92,7 @@ function Reset() {
                 />
                 <input
                   type="text"
-                  {...formik.getFieldProps('input2')}
+                  {...formik.getFieldProps("input2")}
                   className="form-control"
                   maxLength="1"
                   pattern="[0-9]"
@@ -100,7 +102,7 @@ function Reset() {
                 />
                 <input
                   type="text"
-                  {...formik.getFieldProps('input3')}
+                  {...formik.getFieldProps("input3")}
                   className="form-control"
                   maxLength="1"
                   pattern="[0-9]"
@@ -110,7 +112,7 @@ function Reset() {
                 />
                 <input
                   type="text"
-                  {...formik.getFieldProps('input4')}
+                  {...formik.getFieldProps("input4")}
                   className="form-control"
                   maxLength="1"
                   pattern="[0-9]"
@@ -120,7 +122,7 @@ function Reset() {
                 />
                 <input
                   type="text"
-                  {...formik.getFieldProps('input5')}
+                  {...formik.getFieldProps("input5")}
                   className="form-control"
                   maxLength="1"
                   pattern="[0-9]"
@@ -130,7 +132,7 @@ function Reset() {
                 />
                 <input
                   type="text"
-                  {...formik.getFieldProps('input6')}
+                  {...formik.getFieldProps("input6")}
                   className="form-control"
                   maxLength="1"
                   pattern="[0-9]"
@@ -143,11 +145,11 @@ function Reset() {
             </button>
 
             <div class="fw-normal text-muted mb-2">
-              Không nhận được mã xác thực?{' '}
+              Không nhận được mã xác thực?{" "}
               <a
                 href="#"
                 onClick={() => {
-                  toast.success('Đã gửi lại mã xác nhận');
+                  toast.success("Đã gửi lại mã xác nhận");
                   sentOTP(email);
                 }}
                 class="text-primary fw-bold text-decoration-none"
