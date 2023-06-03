@@ -21,7 +21,6 @@ function Register() {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async function (values) {
-      console.log(values);
       try {
         await toast.promise(registerUser(values), {
           loading: 'Đăng ký...',

@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "email": "20521153@gm.uit.edu.vn",
-    "password": "123456789"
+    "password": "123456789`"
 }
 
 # test
@@ -17,17 +17,46 @@ Content-Type: application/json
 
 {
     "name": "Lê Minh Đại",
-    "email": "louistart0ggy@gmail.com",
-    "password": "123456789",
+    "email": "20521153@gm.uit.edu.vn",
+    "password": "123456789`",
     "gender":"Nữ",
     "phoneNumber": "0123456789",
     "address": "Long An",
     "role": "user"
 }
 
+### đổi mật khẩu
+PUT http://localhost:3001/user/64796f8a6e78ca3a3abb5a03/change-password
+Content-Type: application/json
+
+{
+  "currentPassword":"123456789",
+  "newPassword": "123456789`"
+}
+
+###quên mật khẩu
+POST http://localhost:3001/user/20521153@gm.uit.edu.vn/forgot
+
+###gửi mã code về server
+GET http://localhost:3001/user/20521153@gm.uit.edu.vn/reset?code=342796
+
+
+###khôi phục mật khẩu
+PUT http://localhost:3001/user/20521153@gm.uit.edu.vn/recovery
+Content-Type: application/json
+
+{
+  "newPassword": "123456789```"
+}
 
 ###Lấy thông tin user dựa vào id /user/:id
-GET  http://localhost:3001/user/6477591db9fc981b548a9e0c
+GET http://localhost:3001/user/hhh
+
+###Lấy thông tin user dựa vào id /user/email/:id
+GET http://localhost:3001/user/email/20521153@gm.uit.edu.vn
+
+###
+GET  import org.springframework.data.mongodb.repository.Query;/6477591db9fc981b548a9e0c
 
 ### sửa thông tin user dựa vào id /user/:id
 PATCH  http://localhost:3001/user/64742a1422be3a2b49ac76c6

@@ -43,7 +43,9 @@ export async function verifyLogin({ email, password }) {
 
 export async function sentOTP(email) {
   try {
-    const { data } = await axios.post(`/user/${email}/forgot`);
+    const { data } = await axios.post(
+      `http://localhost:3001/user/${email}/forgot`
+    );
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "Error when sent OTP" });
@@ -57,6 +59,16 @@ export async function getUserbyId(_id) {
     return Promise.reject({ error: "Can not get user" });
   }
 }
+export async function getUserByEmail(email) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/user/email/${email}`
+    );
+    return Promise.resolve(response);
+  } catch (error) {
+    return Promise.reject({ error: "Can not get user" });
+  }
+}
 export async function getServiceType() {
   try {
     const { data } = await axios.get("/serviceType");
@@ -65,23 +77,26 @@ export async function getServiceType() {
     return Promise.reject({ error: "Can not get user" });
   }
 }
-export async function verifyOTP({ _id, code }) {
+export async function verifyOTP(email, code) {
   try {
-    const { data, status } = await axios.get("/verifyOTP", {
-      params: { _id, code },
-    });
+    // console.log(email);
+    const { data, status } = await axios.get(
+      `http://localhost:3001/user/${email}/reset?code=${code}`
+    );
     return { data, status };
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-export async function resetPassword({ _id, password }) {
+export async function resetPassword(email, newPassword) {
   try {
-    const { data, status } = await axios.put("/recovery", {
-      _id,
-      password,
-    });
+    const { data, status } = await axios.put(
+      `http://localhost:3001/user/${email}/recovery`,
+      {
+        newPassword,
+      }
+    );
     return Promise.resolve({ data, status });
   } catch (error) {
     return Promise.reject({ error });
