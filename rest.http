@@ -3,8 +3,8 @@ POST http://localhost:3001/user/login
 Content-Type: application/json
 
 {
-    "email": "20521153@gm.uit.edu.vn",
-    "password": "123456789`"
+    "email": "20521460@gm.uit.edu.vn",
+    "password": "Khin@1234567"
 }
 
 ### signup
@@ -63,75 +63,49 @@ Content-Type:  application/json
     "gender": "nữuuuuu"
 }
 
-### thêm 1 hóa đơn /user/:userId/order
-POST http://localhost:3001/user/123/order
+### thêm 1 hóa đơn /orders/:userId/create
+POST http://localhost:3001/orders/647b20c418d291770c4ad4fc/create
 Content-Type: application/json
 
 {
-  "sanphams": [
+  "cart": [
     {
-      "productId": "P001",
-      "name": "Product 1",
-      "image": "image1.jpg",
-      "price": 10.99,
-      "category": "Category 1",
-      "unit": "Unit 1",
-      "quality": "Quality 1",
-      "color": "Color 1",
-      "mass": "Mass 1",
-      "size": "Size 1"
-    },
-    {
-      "productId": "P002",
-      "name": "Product 2",
-      "image": "image2.jpg",
-      "price": 15.99,
-      "category": "Category 2",
-      "unit": "Unit 2",
-      "quality": "Quality 2",
-      "color": "Color 2",
-      "mass": "Mass 2",
-      "size": "Size 2"
-    },
-        {
-      "productId": "P002",
-      "name": "Product 2",
-      "image": "image2.jpg",
-      "price": 15.99,
-      "category": "Category 2",
-      "unit": "Unit 2",
-      "quality": "Quality 2",
-      "color": "Color 2",
-      "mass": "Mass 2",
-      "size": "Size 2"
-    },
-        {
-      "productId": "P002",
-      "name": "Product 2",
-      "image": "image2.jpg",
-      "price": 15.99,
-      "category": "Category 2",
-      "unit": "Unit 2",
-      "quality": "Quality 2",
-      "color": "Color 2",
-      "mass": "Mass 2",
-      "size": "Size 2"
+      "product": {
+        "productid": "P01",
+        "name": "Product 1",
+        "image": "image1.jpg",
+        "price": 1000000,
+        "category": "Category 1",
+        "dvt": "Unit 1",
+        "quality": "Quality 1",
+        "color": "Color 1",
+        "mass": "Mass 1",
+        "size": "Size 1"
+      },
+      "totalPrice": 2000000,
+      "quantity": 2
     },
     {
-      "productId": "P003",
-      "name": "Product 3",
-      "image": "image3.jpg",
-      "price": 20.99,
-      "category": "Category 3",
-      "unit": "Unit 3",
-      "quality": "Quality 3",
-      "color": "Color 3",
-      "mass": "Mass 3",
-      "size": "Size 3"
+      "product": {
+        "productid": "P02",
+        "name": "Product 2",
+        "image": "image2.jpg",
+        "price": 100000,
+        "category": "Category 2",
+        "dvt": "Unit 2",
+        "quality": "Quality 2",
+        "color": "Color 2",
+        "mass": "Mass 2",
+        "size": "Size 2"
+      },
+      "totalPrice": 500000,
+      "quantity": 5
     }
   ],
-  "diachigiaohang": "Address 1",
-  "phuongthucthanhtoan": "Payment method 1"
+  "image": null,
+  "shippingAddress": "UIT",
+  "paymentMethod": "Cash",
+  "total": 2500000
 }
 
 ### xóa hóa đơn nếu tình trạng là: chưa xử lý
@@ -180,4 +154,5 @@ Content-Type: application/json
 
 ### lấy tất cả sp trong giỏ hàng
 GET http://localhost:3001/cart
+
 

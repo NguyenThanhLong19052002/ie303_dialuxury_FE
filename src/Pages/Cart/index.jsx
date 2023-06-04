@@ -63,7 +63,7 @@ function Cart() {
   const handleClearCart = () => {
     setShowModal(true);
   };
-
+  
   //gọi api xóa tất cả sản phẩm trong giỏ hàng
   const handleConfirmDelete = async () => {
     try {
