@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "email": "20521153@gm.uit.edu.vn",
-    "password": "123456789`"
+    "password": "123456789``"
 }
 
 ### signup
@@ -134,11 +134,11 @@ Content-Type: application/json
   "phuongthucthanhtoan": "Payment method 1"
 }
 
+###lấy hóa đơn của 1 user /user/:id/order
+GET http://localhost:3001/user/123456/order
+
 ### xóa hóa đơn nếu tình trạng là: chưa xử lý
 DELETE  http://localhost:3001/user/order/HD001
-
-### lấy hóa đơn của 1 user /user/:id/order
-GET  http://localhost:3001/user/123456/order
 
 
 ### lấy tất cả các sản phẩm
