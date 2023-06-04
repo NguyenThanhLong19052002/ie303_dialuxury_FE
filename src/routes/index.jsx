@@ -143,37 +143,77 @@ const publicRoutes = [
   },
 ];
 export { publicRoutes };
-
+// component: (
+//   <AuthorizedUser>
+//     <Account></Account>
+//   </AuthorizedUser>
+// ),
 const adminRoutes = [
-  { path: "*", component: <NotFound />, layout: null },
+  {
+    path: "*",
+    component: (
+      <AuthorizedUser>
+        <NotFound />
+      </AuthorizedUser>
+    ),
+    layout: null,
+  },
   {
     path: "/users",
-    component: <Users></Users>,
+    component: (
+      <AuthorizedUser>
+        <Users />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/users/:_id",
-    component: <ViewUser></ViewUser>,
+    component: (
+      <AuthorizedUser>
+        <ViewUser />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/user/order/detail/:_orderid",
-    component: <OrderView></OrderView>,
+    component: (
+      <AuthorizedUser>
+        <OrderView />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/order/detail/:_orderid",
-    component: <ViewOrder></ViewOrder>,
+    component: (
+      <AuthorizedUser>
+        <ViewOrder />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/service",
-    component: <Service />,
+    component: (
+      <AuthorizedUser>
+        <Service />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/service/addTypeInService",
-    component: <AddTypeInService />,
+    component: (
+      <AuthorizedUser>
+        <AddTypeInService />
+      </AuthorizedUser>
+    ),
   },
 
   {
     path: "/service/view/:_id",
-    component: <ViewService />,
+    component: (
+      <AuthorizedUser>
+        <ViewService />
+      </AuthorizedUser>
+    ),
   },
   // {
   //   path: "/serviceType/view/:svt_id",
@@ -181,20 +221,36 @@ const adminRoutes = [
   // },
   {
     path: "/service/adjustService",
-    component: <AdjustService />,
+    component: (
+      <AuthorizedUser>
+        <AdjustService />
+      </AuthorizedUser>
+    ),
   },
 
   {
     path: "/serviceType/addServiceType",
-    component: <AddServiceType />,
+    component: (
+      <AuthorizedUser>
+        <AddServiceType />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/serviceType/adjustServiceType/:svt_id",
-    component: <AdjustServiceType />,
+    component: (
+      <AuthorizedUser>
+        <AdjustServiceType />
+      </AuthorizedUser>
+    ),
   },
   {
     path: "/homeAdmin",
-    component: <HomeAdmin />,
+    component: (
+      <AuthorizedUser>
+        <HomeAdmin />{" "}
+      </AuthorizedUser>
+    ),
   },
 
   {
