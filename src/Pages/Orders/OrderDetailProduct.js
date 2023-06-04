@@ -1,8 +1,13 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { getOrderbyId, getUserbyId } from '../Login1/helpers/helper';
-import ClipLoader from 'react-spinners/ClipLoader';
-const OrderDetailProducts = () => {
+import React, { useEffect, useState, CSSProperties } from "react";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  getOrderbyId,
+  getUserbyId,
+  getAllOrdersByOrderId,
+} from "../Login1/helpers/helper";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const OrderDetailProducts = (props) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const { _orderid } = useParams();
@@ -13,36 +18,49 @@ const OrderDetailProducts = () => {
   const [address, setAddress] = useState();
   const [status, setStatus] = useState();
   const [total, setTotal] = useState(0);
-  const [tableData, setTableData] = useState(null);
-  const _id = localStorage.getItem('_id');
+  const [orders, setOrders] = useState();
+  const _id = localStorage.getItem("userId");
+
   useEffect(() => {
     // This function will run once when the component mounts.
     let forgotPromise = getUserbyId(_id);
     forgotPromise.then(function (res) {
-      let { email, name, phone } = res.data;
+      let { email, name, phoneNumber } = res.data;
       setEmail(email);
-      setPhone(phone);
+      setPhone(phoneNumber);
       setName(name);
     });
     let orderPromise = getOrderbyId(_orderid);
     orderPromise.then(function (res) {
-      let address = res.data[0].diachigiaohang;
-      let date = res.data[0].ngaylap;
-      let status = res.data[0].tinhtrang;
-      let total = res.data[0].tongtien;
-      let tabledata = res.data[0].sanphams;
+      let address = res.data.shippingAddress;
+      let date = res.data.createdAt;
+      let status = res.data.status;
+      let total = res.data.totalPriceOrder;
+      // let tabledata = res.data[0].sanphams;
       setAddress(address);
       setDate(date);
       setStatus(status);
       setTotal(total);
-      setTableData(tabledata);
+      // setTableData(tabledata);
       setIsLoading(false);
+    });
+    let ordersPromise = getAllOrdersByOrderId(_orderid);
+    ordersPromise.then(function (res) {
+      // const uniqueOrderIds = [];
+      // const uniqueData = [];
+      // res.forEach(item => {
+      //   if (!uniqueOrderIds.includes(item._id)) {
+      //     uniqueOrderIds.push(item._id);
+      //     uniqueData.push(item);
+      //   }
+      // });
+      setOrders(res);
     });
   }, []); // The empty array as the second argument means this effect will only run once.
   const override: CSSProperties = {
-    display: 'block',
-    margin: '0 auto',
-    borderColor: 'green',
+    display: "block",
+    margin: "0 auto",
+    borderColor: "green",
   };
 
   function goBackClick() {
@@ -66,105 +84,105 @@ const OrderDetailProducts = () => {
             <div className="col-md-6 col-lg-4">
               <article className="icontext align-items-start">
                 <span className="icon icon-sm rounded-circle alert-success">
-                  <i className="text-success fas fa-user"> </i>{' '}
-                </span>{' '}
+                  <i className="text-success fas fa-user"> </i>{" "}
+                </span>{" "}
                 <div className="text">
-                  <h6 className="mb-1"> Khách hàng </h6>{' '}
+                  <h6 className="mb-1"> Khách hàng </h6>{" "}
                   <p className="mb-1">
                     {name} <br />
                     <a href={`mailto:user@example.com`}> {email} </a> <br />
                     <p>{phone}</p>
-                  </p>{' '}
-                </div>{' '}
-              </article>{' '}
-            </div>{' '}
+                  </p>{" "}
+                </div>{" "}
+              </article>{" "}
+            </div>{" "}
             <div className="col-md-6 col-lg-4">
               <article className="icontext align-items-start">
                 <span className="icon icon-sm rounded-circle alert-success">
-                  <i className="text-success fas fa-truck-moving"> </i>{' '}
-                </span>{' '}
+                  <i className="text-success fas fa-truck-moving"> </i>{" "}
+                </span>{" "}
                 <div className="text">
-                  <h6 className="mb-1"> Ngày đặt hàng </h6>{' '}
-                  <p className="mb-1">{date}</p>{' '}
-                </div>{' '}
-              </article>{' '}
-            </div>{' '}
+                  <h6 className="mb-1"> Ngày đặt hàng </h6>{" "}
+                  <p className="mb-1">{date}</p>{" "}
+                </div>{" "}
+              </article>{" "}
+            </div>{" "}
             <div className="col-md-6 col-lg-4">
               <article className="icontext align-items-start">
                 <span className="icon icon-sm rounded-circle alert-success">
-                  <i className="text-success fas fa-map-marker-alt"> </i>{' '}
-                </span>{' '}
+                  <i className="text-success fas fa-map-marker-alt"> </i>{" "}
+                </span>{" "}
                 <div className="text">
-                  <h6 className="mb-1"> Địa chỉ giao hàng </h6>{' '}
-                  <p className="mb-1">{address}</p>{' '}
-                </div>{' '}
-              </article>{' '}
-            </div>{' '}
+                  <h6 className="mb-1"> Địa chỉ giao hàng </h6>{" "}
+                  <p className="mb-1">{address}</p>{" "}
+                </div>{" "}
+              </article>{" "}
+            </div>{" "}
           </div>
           <table className="table border table-lg">
             <thead>
               <tr>
                 <th
                   style={{
-                    width: '40%',
+                    width: "40%",
                   }}
                 >
-                  {' '}
-                  Sản phẩm{' '}
-                </th>{' '}
+                  {" "}
+                  Sản phẩm{" "}
+                </th>{" "}
                 <th
                   style={{
-                    width: '20%',
+                    width: "20%",
                   }}
                 >
-                  {' '}
-                  Đơn giá{' '}
-                </th>{' '}
+                  {" "}
+                  Đơn giá{" "}
+                </th>{" "}
                 <th
                   style={{
-                    width: '20%',
+                    width: "20%",
                   }}
                 >
                   Số lượng
-                </th>{' '}
+                </th>{" "}
                 <th
                   style={{
-                    width: '20%',
+                    width: "20%",
                   }}
                   className="text-end"
                 >
-                  Thành tiền{' '}
-                </th>{' '}
-              </tr>{' '}
-            </thead>{' '}
+                  Thành tiền{" "}
+                </th>{" "}
+              </tr>{" "}
+            </thead>{" "}
             <tbody>
-              {tableData?.map((data, index) => (
+              {orders?.map((data, index) => (
                 <tr key={index}>
                   <td>
                     <Link className="itemside" to="#">
                       <div className="left">
                         <img
-                          src={data.hinhanh}
+                          src={data.product.image}
                           alt="product"
                           style={{
-                            width: '80px',
-                            height: '80px',
-                            margin: '0 10px 10px 0',
+                            width: "80px",
+                            height: "80px",
+                            margin: "0 10px 10px 0",
                           }}
                           className="img-xs"
                         />
                       </div>
-                      <div className="info" style={{ marginLeft: '10px' }}>
-                        {data.sanpham}
+                      <div className="info" style={{ marginLeft: "10px" }}>
+                        {data.product.name}
                       </div>
                     </Link>
                   </td>
-                  <td>{data.dongia.toLocaleString()} VND</td>
+                  <td>{data.product.price.toLocaleString()} VND</td>
                   <td>
-                    <div style={{ marginLeft: '20px' }}>{data.sl}</div>{' '}
+                    <div style={{ marginLeft: "20px" }}>{data.quantity}</div>{" "}
                   </td>
                   <td className="text-end">
-                    {data.thanhtien.toLocaleString()} VND
+                    {data.totalPrice.toLocaleString()} VND
                   </td>
                 </tr>
               ))}
@@ -178,21 +196,21 @@ const OrderDetailProducts = () => {
                       </dd>
                     </dl>
                     <dl className="dlist ">
-                      <dt className="text-muted " style={{ marginTop: '10px' }}>
+                      <dt className="text-muted " style={{ marginTop: "10px" }}>
                         Trạng thái:
                       </dt>
                       <dd>
                         <span
                           className={
-                            status === 'Đã giao hàng'
-                              ? 'badge rounded-pill alert alert-success text-success'
-                              : status === 'Đang xử lý'
-                              ? 'badge rounded-pill alert alert-success text-info'
-                              : status === 'Đang giao hàng'
-                              ? 'badge rounded-pill alert alert-success text-warning'
-                              : 'badge rounded-pill alert alert-success text-danger'
+                            status === "Đã giao hàng"
+                              ? "badge rounded-pill alert alert-success text-success"
+                              : status === "Đang xử lý"
+                              ? "badge rounded-pill alert alert-success text-info"
+                              : status === "Đang giao hàng"
+                              ? "badge rounded-pill alert alert-success text-warning"
+                              : "badge rounded-pill alert alert-success text-danger"
                           }
-                          style={{ marginTop: '20px' }}
+                          style={{ marginTop: "20px" }}
                         >
                           {status}
                         </span>

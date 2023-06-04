@@ -112,8 +112,13 @@ Content-Type: application/json
 DELETE  http://localhost:3001/user/order/HD001
 
 ### lấy hóa đơn của 1 user /user/:id/order
-GET  http://localhost:3001/user/123456/order
+GET  http://localhost:3001/orders/user/647b20c418d291770c4ad4fc
 
+### lấy hoá đơn theo id
+GET  http://localhost:3001/orders/order/HD02
+
+### lấy hóa đơn theo id
+GET  http://localhost:3001/orders/HD01/get
 
 ### lấy tất cả các sản phẩm
 GET http://localhost:3001/product
@@ -154,5 +159,7 @@ Content-Type: application/json
 
 ### lấy tất cả sp trong giỏ hàng
 GET http://localhost:3001/cart
+
+
 
 

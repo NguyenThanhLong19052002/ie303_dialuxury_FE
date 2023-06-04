@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './style.css';
 import 'bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 import {
   cancelOrderbyId,
   deliveredOrderbyId,
@@ -29,6 +29,7 @@ const Orders = () => {
   const { _id } = useParams();
   const navigate = useNavigate();
   const [orders, setOrders] = useState();
+  const [ordersClone, setOrdersClone] = useState();
 
   const [isLoading, setIsLoading] = useState(true);
   const [showCancel, setShowCancel] = useState(false);
@@ -78,10 +79,19 @@ const Orders = () => {
     // This function will run once when the component mounts.
     let forgotPromise = getAllOrders(_id);
     forgotPromise.then(function (res) {
-      setOrders(res);
+      const uniqueOrderIds = [];
+      const uniqueData = [];
+      res.forEach(item => {
+        if (!uniqueOrderIds.includes(item._id)) {
+          uniqueOrderIds.push(item._id);
+          uniqueData.push(item);
+        }
+      });
+      setOrders(uniqueData);
       setIsLoading(false);
     });
   }, []); // The empty array as the second argument means this effect will only run once.
+
 
   return (
     <main>
@@ -126,29 +136,29 @@ const Orders = () => {
             {orders?.map((order) => (
               <tr key={order._id}>
                 <td>
-                  <b>{order.mahd}</b>{' '}
+                  <b>{order._id}</b>{' '}
                 </td>{' '}
-                <td>{order.ngaylap}</td>{' '}
-                <td>{order.tongtien.toLocaleString()} VND </td>{' '}
+                <td>{order.createdAt}</td>{' '}
+                <td>{order.totalPriceOrder.toLocaleString()} VND </td>{' '}
                 <td>
                   {' '}
                   <span
                     className={
-                      order.tinhtrang === 'Đã giao hàng'
+                      order.status === 'Đã giao hàng'
                         ? 'text-success'
-                        : order.tinhtrang === 'Đang xử lý'
+                        : order.status === 'Đang xử lý'
                         ? 'text-info'
-                        : order.tinhtrang === 'Đang giao hàng'
+                        : order.status === 'Đang giao hàng'
                         ? 'text-warning'
                         : 'text-danger'
                     }
                   >
-                    {order.tinhtrang}{' '}
+                    {order.status}{' '}
                   </span>{' '}
                 </td>{' '}
                 <td className="d-flex justify-content-end align-item-center">
                   <div>
-                    {order.tinhtrang === 'Đang giao hàng' ? (
+                    {order.status === 'Đang giao hàng' ? (
                       <i
                         className=" fa fa-check-square"
                         style={{
@@ -183,9 +193,9 @@ const Orders = () => {
                     </i>{' '}
                   </Link>{' '}
                   <div>
-                    {order.tinhtrang === 'Đang giao hàng' ||
-                    order.tinhtrang === 'Đã hủy' ||
-                    order.tinhtrang === 'Đã giao hàng' ? (
+                    {order.status === 'Đang giao hàng' ||
+                    order.status === 'Đã hủy' ||
+                    order.status === 'Đã giao hàng' ? (
                       <i
                         className=" fa fa-cart-arrow-down"
                         style={{
