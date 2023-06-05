@@ -42,17 +42,21 @@ const Orders = () => {
     window.location.reload();
   };
   const handleDeliveredClose = () => setShowDelivered(false);
+
   const handleCancelShow = (_orderid) => {
     setShowCancel(true);
     setCurrentOrder(_orderid);
   };
+
   const handleCancelSuccessShow = () => {
     setShowCancelSuccess(true);
   };
+
   const handleDeliveredShow = (_orderid) => {
     setShowDelivered(true);
     setCurrentOrder(_orderid);
   };
+
   const handleCancelOrder = async () => {
     let cancelPromise = cancelOrderbyId(currentOrder);
     cancelPromise
@@ -65,6 +69,7 @@ const Orders = () => {
         console.log(error);
       });
   };
+
   const handleDelivered = async () => {
     let deliveredPromise = deliveredOrderbyId(currentOrder);
     deliveredPromise
@@ -75,6 +80,7 @@ const Orders = () => {
         console.log(error);
       });
   };
+  
   useEffect(() => {
     // This function will run once when the component mounts.
     let forgotPromise = getAllOrders(_id);

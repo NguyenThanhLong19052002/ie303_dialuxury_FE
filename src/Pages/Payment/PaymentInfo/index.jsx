@@ -9,7 +9,6 @@ import { getUserbyId } from "../../Login1/helpers/helper";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-
 function PaymentInfo() {
   //lấy _id của người dùng trong localStorage
   const userId = localStorage.getItem("userId");
@@ -26,26 +25,27 @@ function PaymentInfo() {
     return {
       product: item.product,
       totalPrice: item.totalPrice,
-      quantity: item.quantity
+      quantity: item.quantity,
     };
   });
 
   const [userName, setUserName] = useState("");
   const [address, setAddress] = useState("");
+  const [addressUser, setAddressUser] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false); //lưu trạng thái của Snackbar
 
   //hàm đóng Snackbar
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
-  
 
   //lấy tên user
   useEffect(() => {
     let userPromise = getUserbyId(userId);
     userPromise.then(function (res) {
-      let { name } = res.data;
+      let { name, address } = res.data;
       setUserName(name);
+      setAddressUser(address);
     });
   }, []);
 
@@ -58,11 +58,13 @@ function PaymentInfo() {
 
   //chọn hình ảnh xác thực
   const fileInputRef = useRef(null);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [ok, setOk] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const handleFileInput = (event) => {
     const file = event.target.files[0];
+    // const formData = new FormData();
+    // formData.append("image", file);
     setImage(file);
     const fileType = file.type;
     if (fileType === "image/png" || fileType === "image/jpeg") {
@@ -101,40 +103,62 @@ function PaymentInfo() {
     //     .catch((error) => {
     //         console.log(error);
     //     });
-    let method = '';
-    if(bank === "CashImg"){
-      method = 'Tiền mặt';
-    }
-    else if(bank === "MomoQR"){
-      method = 'Momo';
-    }
-    else if(bank === "BIDVQR"){
-      method = 'BIDV';
-    }
-    else {
-      method = 'ZaloPay';
+    let method = "";
+    let img = '';
+    if (bank === "CashImg") {
+      method = "Tiền mặt";
+    } else if (bank === "MomoQR") {
+      method = "Momo";
+    } else if (bank === "BIDVQR") {
+      method = "BIDV";
+    } else {
+      method = "ZaloPay";
     }
     const data = {
       cart: cart,
-      image: image,
-      shippingAddress: address,
+      image: img,
+      shippingAddress: address !== "" ? address : addressUser,
       paymentMethod: method,
-      total: location.state.total
+      total: location.state.total,
     };
+
+    const data1 = new FormData();
+    data1.append("cart", cart);
+    data1.append("image", fileInputRef.current.files[0]);
+    data1.append("shippingAddress", address !== "" ? address : addressUser);
+    data1.append("paymentMethod", method);
+    data1.append("total", location.state.total);
+
     //gọi api thêm hoá đơn
-    await axios
-      .post(`http://localhost:3001/orders/${userId}/create`, data)
+    if (bank === "CashImg") {
+       await axios
+        .post(`http://localhost:3001/orders/${userId}/createOrder`, data)
         .then((response) => {
           console.log(response.data);
           setOpenSnackbar(true);
           handleClearCart();
           setTimeout(() => {
             navigate("/paymentfinish");
-          }, 1500);
+          }, 1000);
         })
         .catch((error) => {
           console.error(error);
         });
+    } else {
+      await axios
+        .post(`http://localhost:3001/orders/${userId}/create`, data1)
+        .then((response) => {
+          console.log(response.data);
+          setOpenSnackbar(true);
+          handleClearCart();
+          setTimeout(() => {
+            navigate("/paymentfinish");
+          }, 1000);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -222,11 +246,20 @@ function PaymentInfo() {
               </div>
             )}
           </div>
-          <div className="px-4 my-4 my-1 text-center" style={{ width: '50%', margin: 'auto' }}>
-          <InputGroup>
-            <InputGroup.Text>Địa chỉ giao hàng:</InputGroup.Text>
-            <Form.Control as="textarea" aria-label="textarea" rows={4} onChange={(e) => setAddress(e.target.value)}/>
-          </InputGroup>
+          <div
+            className="px-4 my-4 my-1 text-center"
+            style={{ width: "50%", margin: "auto" }}
+          >
+            <InputGroup>
+              <InputGroup.Text>Địa chỉ giao hàng:</InputGroup.Text>
+              <Form.Control
+                as="textarea"
+                aria-label="textarea"
+                rows={4}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </InputGroup>
           </div>
           <div className="px-4 my-4 my-1 text-center">
             <p>
