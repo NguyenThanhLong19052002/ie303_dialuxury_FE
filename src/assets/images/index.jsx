@@ -1,5 +1,6 @@
 const images = {
   notFoundGif: require("./notfound.gif"),
+  CashImg: require("./cashimg.png"),
   MomoQR: require("./MomoQR.jpg"),
   momoPayment: require("./momoPayment.jpg"),
   ZalopayQR: require("./ZalopayQR.jpg"),

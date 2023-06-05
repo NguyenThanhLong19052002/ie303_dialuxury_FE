@@ -92,7 +92,7 @@ export function registerValidate(values) {
   return errors;
 }
 export function updateProfileValidate(values) {
-  console.log(values);
+  // console.log(values);
   const errors = emailVerify({}, values);
   usernameVerify(errors, values);
   addressVerify(errors, values);

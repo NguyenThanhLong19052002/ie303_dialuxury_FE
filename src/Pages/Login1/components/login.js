@@ -32,7 +32,11 @@ function Login() {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("role", role);
-        navigate("/");
+        if (localStorage.getItem("role") == "admin") {
+          navigate("/homeAdmin");
+        } else {
+          navigate("/");
+        }
       });
     },
   });
