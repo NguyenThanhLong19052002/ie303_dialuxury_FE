@@ -4,6 +4,7 @@ import { publicRoutes, adminRoutes } from "./routes";
 import { Fragment } from "react";
 import AdminLayout from "./Layout/AdminLayout";
 
+
 function App() {
   return (
     <div className="App">

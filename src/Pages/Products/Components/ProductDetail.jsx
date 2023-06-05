@@ -4,13 +4,19 @@ import { Form, FormControl } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
 function Product() {
   let { id } = useParams(); //lấy id từ url
   console.log(id);
 
   const [product, setProduct] = useState(); //lấy sản phẩm từ api
   const [sl, setSL] = useState(1); //lấy số lượng sản phẩm người dùng muốn thêm vào giỏ hàng
+  const [openSnackbar, setOpenSnackbar] = useState(false); //lưu trạng thái của Snackbar
   const idUserString = localStorage.getItem("productid");
+
+  // const [cart, setCart] = useState([]);
 
   //hàm tăng số lượng sản phẩm
   const HandleIncreaseSL = () => {
@@ -20,6 +26,11 @@ function Product() {
   //hàm giảm số lượng sản phẩm
   const HandleDecreaseSL = () => {
     if (sl !== 1) setSL((prevSL) => prevSL - 1);
+  };
+
+  //hàm đóng Snackbar
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   //lấy thông tin sản phẩm
@@ -36,20 +47,48 @@ function Product() {
       });
   }, [id]);
 
+  // const fetchCartItems = async () => {
+  //   await axios
+  //     .get("http://localhost:3001/cart")
+  //     .then((response) => {
+  //       setCart(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   //thêm sản phẩm vào giỏ hàng
   const AddToCart = async () => {
-    await axios
-      .post("http://localhost:3001/product/cart", {
-        userId: idUserString,
+    const cartItem = {
+      product: {
         productid: product.productid,
-        soluong: sl,
-      })
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        category: product.category,
+        dvt: product.unit,
+        quality: product.quality,
+        color: product.color,
+        mass: product.mass,
+        size: product.size,
+      },
+      totalPrice: product.price * sl,
+      quantity: sl,
+    };
+    await axios
+      .post("http://localhost:3001/cart/add", cartItem)
       .then((res) => {
         console.log("Mua thành công");
+        console.log(res.data);
+        setOpenSnackbar(true); // Mở Snackbar khi thêm vào giỏ hàng thành công
+        // fetchCartItems();
+        // console.log(cart);
+        // localStorage.setItem("cartItem", JSON.stringify(cart));
       })
       .catch((e) => {
         console.log("Mua thất bại");
-        console.log(e);
+        console.error(e);
       });
   };
 
@@ -112,6 +151,22 @@ function Product() {
           </Button>
         </Col>
       </Row>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000} // Thời gian tự động đóng Snackbar (ms)
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Vị trí hiển thị
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity="success" // Loại thông báo (success, error, warning, info)
+          sx={{ width: "100%" }}
+          elevation={6}
+          variant="filled"
+        >
+          Đã thêm sản phẩm vào giỏ hàng!
+        </MuiAlert>
+      </Snackbar>
       <div>
         <h3>Thông số</h3>
         <Row>

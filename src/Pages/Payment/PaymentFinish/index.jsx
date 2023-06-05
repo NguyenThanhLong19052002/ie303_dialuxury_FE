@@ -7,9 +7,9 @@ function PaymentFinish () {
     const location = useLocation();
     
     //nếu không có dữ liệu truyền vào từ giỏ hàng thì chuyển hướng sang trang chủ
-    if (!location.state) {
-        window.location.replace("/");
-    }
+    // if (!location.state) {
+    //     window.location.replace("/");
+    // }
 
     return (
         <div className="text-center py-5">

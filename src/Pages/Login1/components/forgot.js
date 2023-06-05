@@ -1,35 +1,36 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
-import { useFormik } from 'formik';
-import '../styles/style.css';
-import { emailForgotValidate } from './validate/validate';
-import { useNavigate } from 'react-router-dom';
-import { getUser, sentOTP } from '../helpers/helper';
+import React from "react";
+import { Link } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { useFormik } from "formik";
+import "../styles/style.css";
+import { emailForgotValidate } from "./validate/validate";
+import { useNavigate } from "react-router-dom";
+import { getUser, sentOTP } from "../helpers/helper";
 
 function Forgot() {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: "",
     },
     validate: emailForgotValidate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async function (values) {
       try {
+        localStorage.setItem("email", values.email);
         let forgotPromise = sentOTP(values.email);
-
         await toast.promise(forgotPromise, {
-          loading: 'Xác nhận...',
-          success: 'Hãy nhập mã xác thực được gửi tới email của bạn',
+          loading: "Xác nhận...",
+          success: "Hãy nhập mã xác thực được gửi tới email của bạn",
           error: <b>Email không tồn tại</b>,
         });
 
         forgotPromise.then(function (res) {
-          let { _id } = res.data;
-          console.log(_id);
-          navigate(`/reset/${_id}`);
+          // console.log(res);
+          // let { email } = res.data;
+          let email = localStorage.getItem("email");
+          navigate(`/reset/${email}`);
         });
 
         // navigate(`/reset/${id}`);
@@ -54,7 +55,7 @@ function Forgot() {
 
             <div class="form-f loating mb-3">
               <input
-                {...formik.getFieldProps('email')}
+                {...formik.getFieldProps("email")}
                 type="email"
                 class="form-control"
                 id="floatingInput"

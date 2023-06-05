@@ -1,11 +1,12 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 axios.defaults.baseURL = "https://dialuxury.onrender.com";
 export async function registerUser(credentials) {
   try {
+    // console.log(credentials);
     const {
       data: { msg },
-    } = await axios.post("/register", credentials);
+    } = await axios.post("http://localhost:3001/user/signup", credentials);
 
     //send email
 
@@ -37,13 +38,15 @@ export async function verifyLogin({ email, password }) {
     });
     return Promise.resolve(data);
   } catch (error) {
-    return Promise.reject({ error: "Password doesnt match" });
+    return Promise.reject({ error: "Password doesn't match" });
   }
 }
 
 export async function sentOTP(email) {
   try {
-    const { data } = await axios.post(`/user/${email}/forgot`);
+    const { data } = await axios.post(
+      `http://localhost:3001/user/${email}/forgot`
+    );
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "Error when sent OTP" });
@@ -51,8 +54,18 @@ export async function sentOTP(email) {
 }
 export async function getUserbyId(_id) {
   try {
-    const { data } = await axios.get(`/userid/${_id}`);
-    return Promise.resolve({ data });
+    const response = await axios.get(`http://localhost:3001/user/${_id}`);
+    return Promise.resolve(response);
+  } catch (error) {
+    return Promise.reject({ error: "Can not get user" });
+  }
+}
+export async function getUserByEmail(email) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/user/email/${email}`
+    );
+    return Promise.resolve(response);
   } catch (error) {
     return Promise.reject({ error: "Can not get user" });
   }
@@ -65,23 +78,26 @@ export async function getServiceType() {
     return Promise.reject({ error: "Can not get user" });
   }
 }
-export async function verifyOTP({ _id, code }) {
+export async function verifyOTP(email, code) {
   try {
-    const { data, status } = await axios.get("/verifyOTP", {
-      params: { _id, code },
-    });
+    // console.log(email);
+    const { data, status } = await axios.get(
+      `http://localhost:3001/user/${email}/reset?code=${code}`
+    );
     return { data, status };
   } catch (error) {
     return Promise.reject(error);
   }
 }
 
-export async function resetPassword({ _id, password }) {
+export async function resetPassword(email, newPassword) {
   try {
-    const { data, status } = await axios.put("/recovery", {
-      _id,
-      password,
-    });
+    const { data, status } = await axios.put(
+      `http://localhost:3001/user/${email}/recovery`,
+      {
+        newPassword,
+      }
+    );
     return Promise.resolve({ data, status });
   } catch (error) {
     return Promise.reject({ error });
@@ -89,11 +105,14 @@ export async function resetPassword({ _id, password }) {
 }
 export async function changePassword({ _id, currentPassword, newPassword }) {
   try {
-    const { data, status } = await axios.put("/changepassword", {
-      _id,
-      currentPassword,
-      newPassword,
-    });
+    const { data, status } = await axios.put(
+      `http://localhost:3001/user/${_id}/change-password`,
+      {
+        _id,
+        currentPassword,
+        newPassword,
+      }
+    );
     return Promise.resolve({ data, status });
   } catch (error) {
     return Promise.reject({ error });
@@ -104,9 +123,13 @@ export function myFunction() {
 }
 export async function updateUser(user, _id) {
   try {
-    const token = await localStorage.getItem("token");
+    // const token = await localStorage.getItem("token");
 
-    const { data, status } = await axios.put("/updateuser", { user, _id });
+    // console.log({ user });
+    const { data, status } = await axios.patch(
+      `http://localhost:3001/user/${_id}`,
+      user
+    );
     return Promise.resolve({ data });
   } catch (error) {
     if (
@@ -128,11 +151,20 @@ export async function updateUser(user, _id) {
 
 export async function getAllOrders(_id) {
   try {
-    const { data } = await axios.get(`/orders/${_id}`);
+    const { data } = await axios.get(`http://localhost:3001/orders/user/${_id}`);
     return Promise.resolve(data);
   } catch (error) {
-    console.log("vai loz");
+    console.log(error);
     return Promise.reject({ error: "can not get Orders" });
+  }
+}
+export async function getAllOrdersByOrderId(_id) {
+  try {
+    const { data } = await axios.get(`http://localhost:3001/orders/order/${_id}`);
+    return Promise.resolve(data);
+  } catch (error) {
+    console.log(error);
+    return Promise.reject({ error: "can not get Orders by OrderId" });
   }
 }
 export async function getAllOrdersAllUser() {
@@ -141,13 +173,13 @@ export async function getAllOrdersAllUser() {
     console.log(await axios.get("/orderall"));
     return Promise.resolve(data);
   } catch (error) {
-    console.log("vai loz");
+    console.log(error);
     return Promise.reject({ error: "can not get Orders" });
   }
 }
 export async function getOrderbyId(_orderid) {
   try {
-    const { data } = await axios.get(`/orderdetail/${_orderid}`);
+    const { data } = await axios.get(`http://localhost:3001/orders/${_orderid}/get`);
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "can not get order" });

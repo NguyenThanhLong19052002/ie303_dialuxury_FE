@@ -1,17 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/style.css';
-import { useFormik } from 'formik';
-import toast, { Toaster } from 'react-hot-toast';
-import { loginValidate } from './validate/validate';
-import { verifyLogin } from '../helpers/helper';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import "../styles/style.css";
+import { useFormik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
+import { loginValidate } from "./validate/validate";
+import { verifyLogin } from "../helpers/helper";
+import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validate: loginValidate,
     validateOnBlur: false,
@@ -23,15 +23,20 @@ function Login() {
         password: values.password,
       });
       toast.promise(loginPromise, {
-        loading: 'Checking...',
+        loading: "Checking...",
         success: <b>Đăng nhập thành công </b>,
         error: <b>Sai email hoặc mật khẩu</b>,
       });
       loginPromise.then(function (res) {
-        let { token, _id } = res.data;
-        localStorage.setItem('token', token);
-        localStorage.setItem('_id', _id);
-        navigate('/');
+        let { token, userId, role } = res.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("role", role);
+        if (localStorage.getItem("role") == "admin") {
+          navigate("/homeAdmin");
+        } else {
+          navigate("/");
+        }
       });
     },
   });
@@ -48,7 +53,7 @@ function Login() {
 
             <div class="form-floating mb-3">
               <input
-                {...formik.getFieldProps('email')}
+                {...formik.getFieldProps("email")}
                 type="email"
                 class="form-control"
                 id="floatingInput"
@@ -58,7 +63,7 @@ function Login() {
             </div>
             <div class="form-floating">
               <input
-                {...formik.getFieldProps('password')}
+                {...formik.getFieldProps("password")}
                 type="password"
                 class="form-control"
                 id="floatingPassword"

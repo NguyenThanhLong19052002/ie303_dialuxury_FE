@@ -3,34 +3,59 @@ POST http://localhost:3001/user/login
 Content-Type: application/json
 
 {
-    "email": "20521153@gm.uit.edu.vn",
-    "password": "123456789"
+    "email": "20521460@gm.uit.edu.vn",
+    "password": "Khin@1234567"
 }
-
-# test
-# test1
-
 
 ### signup
 POST http://localhost:3001/user/signup
 Content-Type: application/json
 
 {
-    "name": "Đạiiiiiiiiiiiiiiiiiiii",
-    "email": "02s153@gm.uit.edu.vn",
-    "password": "123456789",
+    "name": "Lê Minh Đại",
+    "email": "20521153333@gm.uit.edu.vn",
+    "password": "123456789`",
     "gender":"Nữ",
     "phoneNumber": "0123456789",
     "address": "Long An",
     "role": "user"
 }
 
+### đổi mật khẩu
+PUT http://localhost:3001/user/64796f8a6e78ca3a3abb5a03/change-password
+Content-Type: application/json
+
+{
+  "currentPassword":"123456789",
+  "newPassword": "123456789`"
+}
+
+###quên mật khẩu
+POST http://localhost:3001/user/20521153@gm.uit.edu.vn/forgot
+
+###gửi mã code về server
+GET http://localhost:3001/user/20521153@gm.uit.edu.vn/reset?code=531514
+
+
+###khôi phục mật khẩu
+PUT http://localhost:3001/user/20521153@gm.uit.edu.vn/recovery
+Content-Type: application/json
+
+{
+  "newPassword": "123456789```"
+}
 
 ###Lấy thông tin user dựa vào id /user/:id
-GET  http://localhost:3001/user/64742a1422be3a2b49ac76c6
+GET http://localhost:3001/user/hhh
+
+###Lấy thông tin user dựa vào id /user/email/:id
+GET http://localhost:3001/user/email/20521153@gm.uit.edu.vn
+
+###
+GET  import org.springframework.data.mongodb.repository.Query;/6477591db9fc981b548a9e0c
 
 ### sửa thông tin user dựa vào id /user/:id
-PATCH  http://localhost:3001/user/64742a1422be3a2b49ac76c6
+PATCH  http://localhost:3001/user/64796f8a6e78ca3a3abb5a03
 Content-Type:  application/json
 
 {
@@ -38,83 +63,62 @@ Content-Type:  application/json
     "gender": "nữuuuuu"
 }
 
-### thêm 1 hóa đơn /user/:userId/order
-POST http://localhost:3001/user/123/order
+### thêm 1 hóa đơn /orders/:userId/create
+POST http://localhost:3001/orders/647b20c418d291770c4ad4fc/create
 Content-Type: application/json
 
 {
-  "sanphams": [
+  "cart": [
     {
-      "productId": "P001",
-      "name": "Product 1",
-      "image": "image1.jpg",
-      "price": 10.99,
-      "category": "Category 1",
-      "unit": "Unit 1",
-      "quality": "Quality 1",
-      "color": "Color 1",
-      "mass": "Mass 1",
-      "size": "Size 1"
-    },
-    {
-      "productId": "P002",
-      "name": "Product 2",
-      "image": "image2.jpg",
-      "price": 15.99,
-      "category": "Category 2",
-      "unit": "Unit 2",
-      "quality": "Quality 2",
-      "color": "Color 2",
-      "mass": "Mass 2",
-      "size": "Size 2"
-    },
-        {
-      "productId": "P002",
-      "name": "Product 2",
-      "image": "image2.jpg",
-      "price": 15.99,
-      "category": "Category 2",
-      "unit": "Unit 2",
-      "quality": "Quality 2",
-      "color": "Color 2",
-      "mass": "Mass 2",
-      "size": "Size 2"
-    },
-        {
-      "productId": "P002",
-      "name": "Product 2",
-      "image": "image2.jpg",
-      "price": 15.99,
-      "category": "Category 2",
-      "unit": "Unit 2",
-      "quality": "Quality 2",
-      "color": "Color 2",
-      "mass": "Mass 2",
-      "size": "Size 2"
+      "product": {
+        "productid": "P01",
+        "name": "Product 1",
+        "image": "image1.jpg",
+        "price": 1000000,
+        "category": "Category 1",
+        "dvt": "Unit 1",
+        "quality": "Quality 1",
+        "color": "Color 1",
+        "mass": "Mass 1",
+        "size": "Size 1"
+      },
+      "totalPrice": 2000000,
+      "quantity": 2
     },
     {
-      "productId": "P003",
-      "name": "Product 3",
-      "image": "image3.jpg",
-      "price": 20.99,
-      "category": "Category 3",
-      "unit": "Unit 3",
-      "quality": "Quality 3",
-      "color": "Color 3",
-      "mass": "Mass 3",
-      "size": "Size 3"
+      "product": {
+        "productid": "P02",
+        "name": "Product 2",
+        "image": "image2.jpg",
+        "price": 100000,
+        "category": "Category 2",
+        "dvt": "Unit 2",
+        "quality": "Quality 2",
+        "color": "Color 2",
+        "mass": "Mass 2",
+        "size": "Size 2"
+      },
+      "totalPrice": 500000,
+      "quantity": 5
     }
   ],
-  "diachigiaohang": "Address 1",
-  "phuongthucthanhtoan": "Payment method 1"
+  "image": null,
+  "shippingAddress": "UIT",
+  "paymentMethod": "Cash",
+  "total": 2500000
 }
 
 ### xóa hóa đơn nếu tình trạng là: chưa xử lý
 DELETE  http://localhost:3001/user/order/HD001
 
 ### lấy hóa đơn của 1 user /user/:id/order
-GET  http://localhost:3001/user/123456/order
+GET  http://localhost:3001/orders/user/647b20c418d291770c4ad4fc
 
+### lấy hoá đơn theo id
+GET  http://localhost:3001/orders/order/HD02
+
+### lấy hóa đơn theo id
+GET  http://localhost:3001/orders/HD01/get
 
 ### lấy tất cả các sản phẩm
 GET http://localhost:3001/product
@@ -137,4 +141,25 @@ GET http://localhost:3001/product/search?name=nh
 
 ### lấy ra hóa đơn có tình trạng là "chưa xử lý"
 GET http://localhost:3001/admin/order/unprocessed
+
+### thêm một sp vô giỏ hàng
+POST http://localhost:3001/cart/add
+Content-Type: application/json
+
+{
+  "product":{
+    "productid": "p22",
+    "name": "Nhẫn Vàng",
+    "image": "https://cdn.pnj.io/images/thumbnails/300/300/detailed/120/sn0000y000084-nhan-bac-style-by-pnj-1.png",
+    "price": 3500000
+  },
+  "totalPrice": 3500000,
+  "quantity": 1
+}
+
+### lấy tất cả sp trong giỏ hàng
+GET http://localhost:3001/cart
+
+
+
 
