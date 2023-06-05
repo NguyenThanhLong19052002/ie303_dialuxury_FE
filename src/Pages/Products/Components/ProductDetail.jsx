@@ -9,6 +9,7 @@ import MuiAlert from "@mui/material/Alert";
 
 function Product() {
   let { id } = useParams(); //lấy id từ url
+  console.log(id);
 
   const [product, setProduct] = useState(); //lấy sản phẩm từ api
   const [sl, setSL] = useState(1); //lấy số lượng sản phẩm người dùng muốn thêm vào giỏ hàng
