@@ -20,7 +20,11 @@ import Forgot from "../Pages/Login1/components/forgot";
 import Reset from "../Pages/Login1/components/otpForgot";
 import Orders from "../Pages/Orders/Orders.js";
 import Recovery from "../Pages/Login1/components/recovery";
-import { AuthorizedUser, LoggedUser } from "../Pages/Login1/authenticate";
+import {
+  AuthorizedUser,
+  LoggedUser,
+  AuthorizedUserIsAdmin,
+} from "../Pages/Login1/authenticate";
 import OrderDetailProducts from "../Pages/Orders/OrderDetailProduct";
 
 import Service from "../admin/pages/service/service_admin";
@@ -152,67 +156,67 @@ const adminRoutes = [
   {
     path: "*",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <NotFound />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
     layout: null,
   },
   {
     path: "/users",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <Users />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/users/:_id",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <ViewUser />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/user/order/detail/:_orderid",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <OrderView />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/order/detail/:_orderid",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <ViewOrder />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/service",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <Service />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/service/addTypeInService",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <AddTypeInService />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
 
   {
     path: "/service/view/:_id",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <ViewService />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   // {
@@ -222,104 +226,168 @@ const adminRoutes = [
   {
     path: "/service/adjustService",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <AdjustService />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
 
   {
     path: "/serviceType/addServiceType",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <AddServiceType />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/serviceType/adjustServiceType/:svt_id",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <AdjustServiceType />
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
   {
     path: "/homeAdmin",
     component: (
-      <AuthorizedUser>
+      <AuthorizedUserIsAdmin>
         <HomeAdmin />{" "}
-      </AuthorizedUser>
+      </AuthorizedUserIsAdmin>
     ),
   },
 
   {
     path: "/warehouse",
-    component: <WareHouse />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <WareHouse />
+      </AuthorizedUserIsAdmin>
+    ),
   },
 
   {
     path: "/paymentVerfication",
-    component: <PaymentAdmin />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <PaymentAdmin />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/paymentView",
-    component: <ViewPayment />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ViewPayment />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/orderVerification",
-    component: <VerifyOrder />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <VerifyOrder />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/viewOrderVerification",
-    component: <ViewOrderVerification />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ViewOrderVerification />
+      </AuthorizedUserIsAdmin>
+    ),
   },
 
   {
     path: "/HoadonAdmin",
-    component: <Hoadon />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <Hoadon />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/vouchersPage",
-    component: <VouchersPageAdmin />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <VouchersPageAdmin />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/vouchersPage/:id",
-    component: <VouchersDetailsAdmin />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <VouchersDetailsAdmin />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/productsPage",
-    component: <ProductsPageAdmin />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ProductsPageAdmin />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/productsPage/add",
-    component: <AddProduct />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <AddProduct />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/productsPage/edit/:id",
-    component: <EditProduct />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <EditProduct />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/vouchersPage/add",
-    component: <AddVoucher />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <AddVoucher />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/admin/vouchersPage/edit/:id",
-    component: <EditVoucher />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <EditVoucher />
+      </AuthorizedUserIsAdmin>
+    ),
   },
 
   {
     path: "/ConfirmationNotification",
-    component: <ConfirmationNotification />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ConfirmationNotification />
+      </AuthorizedUserIsAdmin>
+    ),
   },
   {
     path: "/veriedService",
-    component: <ConfirmationServiceNotification />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ConfirmationServiceNotification />
+      </AuthorizedUserIsAdmin>
+    ),
   },
 
   {
     path: "/ChitietHoadonAdmin/:mahd",
-    component: <ChitietHoadon />,
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ChitietHoadon />
+      </AuthorizedUserIsAdmin>
+    ),
   },
 ];
 export { adminRoutes };
