@@ -8,7 +8,6 @@ import { Container, Row } from "react-bootstrap";
 import axios from "axios";
 function Home() {
   const [newProduct, setnewProduct] = useState([]);
-  
 
   useEffect(() => {
     loadNewProduct();
@@ -16,7 +15,7 @@ function Home() {
 
   const loadNewProduct = async () => {
     axios
-      .get("http://localhost:3001/sortedProduct")
+      .get("http://localhost:3001/product/new")
       .then((response) => {
         setnewProduct(response.data);
         console.log(response.data);
