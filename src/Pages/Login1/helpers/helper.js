@@ -151,11 +151,20 @@ export async function updateUser(user, _id) {
 
 export async function getAllOrders(_id) {
   try {
-    const { data } = await axios.get(`/orders/${_id}`);
+    const { data } = await axios.get(`http://localhost:3001/orders/user/${_id}`);
     return Promise.resolve(data);
   } catch (error) {
-    console.log("vai loz");
+    console.log(error);
     return Promise.reject({ error: "can not get Orders" });
+  }
+}
+export async function getAllOrdersByOrderId(_id) {
+  try {
+    const { data } = await axios.get(`http://localhost:3001/orders/order/${_id}`);
+    return Promise.resolve(data);
+  } catch (error) {
+    console.log(error);
+    return Promise.reject({ error: "can not get Orders by OrderId" });
   }
 }
 export async function getAllOrdersAllUser() {
@@ -164,13 +173,13 @@ export async function getAllOrdersAllUser() {
     console.log(await axios.get("/orderall"));
     return Promise.resolve(data);
   } catch (error) {
-    console.log("vai loz");
+    console.log(error);
     return Promise.reject({ error: "can not get Orders" });
   }
 }
 export async function getOrderbyId(_orderid) {
   try {
-    const { data } = await axios.get(`/orderdetail/${_orderid}`);
+    const { data } = await axios.get(`http://localhost:3001/orders/${_orderid}/get`);
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "can not get order" });

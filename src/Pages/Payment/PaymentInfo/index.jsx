@@ -3,9 +3,12 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
-import { Button } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import { useFormik } from "formik";
 import { getUserbyId } from "../../Login1/helpers/helper";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
 
 function PaymentInfo() {
   //lấy _id của người dùng trong localStorage
@@ -19,31 +22,23 @@ function PaymentInfo() {
     window.location.replace("/");
   }
 
-  // let spList = location.state.cart.map((item) => {
-  //   return {
-  //     productid: item.product.image,
-  //     name: item.product.name,
-  //     image: item.product.category,
-  //     price: item.quantity,
-  //     category: item.product.dvt,
-  //     dvt: item.product.price,
-  //     quality: item.product.price * item.quantity, 
-  //   };
-  // });
+  var cart = location.state.cart.map((item) => {
+    return {
+      product: item.product,
+      totalPrice: item.totalPrice,
+      quantity: item.quantity
+    };
+  });
 
   const [userName, setUserName] = useState("");
+  const [address, setAddress] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false); //lưu trạng thái của Snackbar
 
-  //lấy _id của đơn hàng truyền vào từ URL
-  const [hd, setHd] = useState("");
-  useEffect(() => {
-    // axios.get(`https://dialuxury.onrender.com/order/hd/${location.state.mahd}`)
-    // .then((response) => {
-    //     setHd(response.data[0]);
-    // })
-    // .catch((error) => {
-    //     console.log(error);
-    // });
-  }, []);
+  //hàm đóng Snackbar
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+  
 
   //lấy tên user
   useEffect(() => {
@@ -56,16 +51,19 @@ function PaymentInfo() {
 
   //chọn phương thức thanh toán
   const [bank, setbank] = useState("CashImg");
+  // const [method, setMethod] = useState("");
   const handleSelectChange = (event) => {
     setbank(event.target.value);
   };
 
   //chọn hình ảnh xác thực
   const fileInputRef = useRef(null);
+  const [image, setImage] = useState("");
   const [ok, setOk] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const handleFileInput = (event) => {
     const file = event.target.files[0];
+    setImage(file);
     const fileType = file.type;
     if (fileType === "image/png" || fileType === "image/jpeg") {
       // File là file ảnh
@@ -77,9 +75,18 @@ function PaymentInfo() {
     }
   };
 
+  //xoá giỏ hàng khi thanh toán thành công
+  const handleClearCart = async () => {
+    try {
+      await axios.delete("http://localhost:3001/cart/clear");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //xử lý xác nhận đơn hàng thanh toán (cập nhật lại đơn hàng)
   const navigate = useNavigate();
-  const createOrder = () => {
+  const createOrder = async () => {
     // const updateData = new FormData();
     // updateData.append('diachigiaohang', user.address);
     // updateData.append('hinhanh', fileInputRef.current.files[0]);
@@ -94,6 +101,40 @@ function PaymentInfo() {
     //     .catch((error) => {
     //         console.log(error);
     //     });
+    let method = '';
+    if(bank === "CashImg"){
+      method = 'Tiền mặt';
+    }
+    else if(bank === "MomoQR"){
+      method = 'Momo';
+    }
+    else if(bank === "BIDVQR"){
+      method = 'BIDV';
+    }
+    else {
+      method = 'ZaloPay';
+    }
+    const data = {
+      cart: cart,
+      image: image,
+      shippingAddress: address,
+      paymentMethod: method,
+      total: location.state.total
+    };
+    //gọi api thêm hoá đơn
+    await axios
+      .post(`http://localhost:3001/orders/${userId}/create`, data)
+        .then((response) => {
+          console.log(response.data);
+          setOpenSnackbar(true);
+          handleClearCart();
+          setTimeout(() => {
+            navigate("/paymentfinish");
+          }, 1500);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
   };
 
   return (
@@ -181,6 +222,12 @@ function PaymentInfo() {
               </div>
             )}
           </div>
+          <div className="px-4 my-4 my-1 text-center" style={{ width: '50%', margin: 'auto' }}>
+          <InputGroup>
+            <InputGroup.Text>Địa chỉ giao hàng:</InputGroup.Text>
+            <Form.Control as="textarea" aria-label="textarea" rows={4} onChange={(e) => setAddress(e.target.value)}/>
+          </InputGroup>
+          </div>
           <div className="px-4 my-4 my-1 text-center">
             <p>
               <b>Nếu có thông tin sai sót</b> xin vui lòng gọi số{" "}
@@ -189,11 +236,27 @@ function PaymentInfo() {
           </div>
         </div>
         <div className="text-center my-4">
-          {(bank === 'CashImg' || (bank !== 'CashImg' && ok)) && (
+          {(bank === "CashImg" || (bank !== "CashImg" && ok)) && (
             <Button onClick={createOrder} className="btn btn-primary">
               Xác nhận thanh toán
             </Button>
           )}
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={1500} // Thời gian tự động đóng Snackbar (ms)
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }} // Vị trí hiển thị
+          >
+            <MuiAlert
+              onClose={handleSnackbarClose}
+              severity="success" // Loại thông báo (success, error, warning, info)
+              sx={{ width: "100%" }}
+              elevation={6}
+              variant="filled"
+            >
+              Thanh toán thành công!
+            </MuiAlert>
+          </Snackbar>
         </div>
       </div>
     </div>
