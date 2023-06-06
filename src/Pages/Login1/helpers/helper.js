@@ -151,7 +151,11 @@ export async function updateUser(user, _id) {
 
 export async function getAllOrders(_id) {
   try {
-    const { data } = await axios.get(`http://localhost:3001/orders/user/${_id}`);
+    const response = await axios.get(
+      `http://localhost:3001/orders/user/${_id}/order`
+    );
+    let data = Object.values(response.data);
+
     return Promise.resolve(data);
   } catch (error) {
     console.log(error);
@@ -160,7 +164,9 @@ export async function getAllOrders(_id) {
 }
 export async function getAllOrdersByOrderId(_id) {
   try {
-    const { data } = await axios.get(`http://localhost:3001/orders/order/${_id}`);
+    const { data } = await axios.get(
+      `http://localhost:3001/orders/order/${_id}`
+    );
     return Promise.resolve(data);
   } catch (error) {
     console.log(error);
@@ -179,7 +185,9 @@ export async function getAllOrdersAllUser() {
 }
 export async function getOrderbyId(_orderid) {
   try {
-    const { data } = await axios.get(`http://localhost:3001/orders/${_orderid}/get`);
+    const { data } = await axios.get(
+      `http://localhost:3001/orders/${_orderid}/get`
+    );
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "can not get order" });
