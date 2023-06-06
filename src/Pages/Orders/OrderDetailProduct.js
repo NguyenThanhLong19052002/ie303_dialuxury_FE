@@ -55,6 +55,7 @@ const OrderDetailProducts = (props) => {
       //   }
       // });
       setOrders(res);
+      setIsLoading(false);
     });
   }, []); // The empty array as the second argument means this effect will only run once.
   const override: CSSProperties = {

@@ -182,3 +182,6 @@ GET http://localhost:3001/orders/user/647b20c418d291770c4ad4fc/order
 
 ###
 GET http://localhost:3001/orders/order/HD01
+
+###
+GET  http://localhost:3001/orders/HD01/get

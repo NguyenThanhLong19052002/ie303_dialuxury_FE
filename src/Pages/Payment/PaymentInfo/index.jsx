@@ -29,6 +29,8 @@ function PaymentInfo() {
     };
   });
 
+  const navigate = useNavigate();
+
   const [userName, setUserName] = useState("");
   const [address, setAddress] = useState("");
   const [addressUser, setAddressUser] = useState("");
@@ -86,9 +88,114 @@ function PaymentInfo() {
     }
   };
 
-  //xử lý xác nhận đơn hàng thanh toán (cập nhật lại đơn hàng)
-  const navigate = useNavigate();
-  const createOrder = async () => {
+  //hàm gọi api tạo hoá đơn không có hoá hình ảnh thanh toán
+  const hanldeCreateOrderWithNoImage = async () => {
+    let method = "";
+    if (bank === "CashImg") {
+      method = "Tiền mặt";
+    } else if (bank === "MomoQR") {
+      method = "Momo";
+    } else if (bank === "BIDVQR") {
+      method = "BIDV";
+    } else {
+      method = "ZaloPay";
+    }
+    const data = {
+      cart: cart,
+      image: "",
+      shippingAddress: address !== "" ? address : addressUser,
+      paymentMethod: method,
+      total: location.state.total,
+    };
+    await axios
+      .post(`http://localhost:3001/orders/${userId}/createOrder`, data)
+      .then((response) => {
+        console.log(response.data);
+        setOpenSnackbar(true);
+        handleClearCart();
+        setTimeout(() => {
+          navigate("/paymentfinish");
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  //hàm gọi api tạo hoá đơn có hoá hình ảnh thanh toán
+  const hanldeCreateOrderWithHaveImage = async () => {
+    let method = "";
+
+    if (bank === "CashImg") {
+      method = "Tiền mặt";
+    } else if (bank === "MomoQR") {
+      method = "Momo";
+    } else if (bank === "BIDVQR") {
+      method = "BIDV";
+    } else {
+      method = "ZaloPay";
+    }
+
+    const data = new FormData();
+    // data.append("cart", JSON.stringify(cart));
+    data.append("image", fileInputRef.current.files[0]);
+    data.append("shippingAddress", address !== "" ? address : addressUser);
+    data.append("paymentMethod", method);
+    data.append("total", location.state.total);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    await axios
+      .post(`http://localhost:3001/orders/${userId}/create`, data, config)
+      .then((response) => {
+        console.log(response.data);
+        hanldeCreateOrderDetail();
+        setOpenSnackbar(true);
+        handleClearCart();
+        setTimeout(() => {
+          navigate("/paymentfinish");
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const hanldeCreateOrderDetail = () => {
+    // let method = "";
+    // if (bank === "CashImg") {
+    //   method = "Tiền mặt";
+    // } else if (bank === "MomoQR") {
+    //   method = "Momo";
+    // } else if (bank === "BIDVQR") {
+    //   method = "BIDV";
+    // } else {
+    //   method = "ZaloPay";
+    // }
+    
+    const data = {
+      cart: cart,
+    };
+
+    axios
+      .post(`http://localhost:3001/orders/createOrderDetail`, data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  
+
+  //xử lý xác nhận đơn hàng thanh toán
+
+  const createOrder = () => {
     // const updateData = new FormData();
     // updateData.append('diachigiaohang', user.address);
     // updateData.append('hinhanh', fileInputRef.current.files[0]);
@@ -103,61 +210,12 @@ function PaymentInfo() {
     //     .catch((error) => {
     //         console.log(error);
     //     });
-    let method = "";
-    let img = '';
-    if (bank === "CashImg") {
-      method = "Tiền mặt";
-    } else if (bank === "MomoQR") {
-      method = "Momo";
-    } else if (bank === "BIDVQR") {
-      method = "BIDV";
-    } else {
-      method = "ZaloPay";
-    }
-    const data = {
-      cart: cart,
-      image: img,
-      shippingAddress: address !== "" ? address : addressUser,
-      paymentMethod: method,
-      total: location.state.total,
-    };
-
-    const data1 = new FormData();
-    data1.append("cart", cart);
-    data1.append("image", fileInputRef.current.files[0]);
-    data1.append("shippingAddress", address !== "" ? address : addressUser);
-    data1.append("paymentMethod", method);
-    data1.append("total", location.state.total);
 
     //gọi api thêm hoá đơn
     if (bank === "CashImg") {
-       await axios
-        .post(`http://localhost:3001/orders/${userId}/createOrder`, data)
-        .then((response) => {
-          console.log(response.data);
-          setOpenSnackbar(true);
-          handleClearCart();
-          setTimeout(() => {
-            navigate("/paymentfinish");
-          }, 1000);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      await axios
-        .post(`http://localhost:3001/orders/${userId}/create`, data1)
-        .then((response) => {
-          console.log(response.data);
-          setOpenSnackbar(true);
-          handleClearCart();
-          setTimeout(() => {
-            navigate("/paymentfinish");
-          }, 1000);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      hanldeCreateOrderWithNoImage();
+    } else if (bank !== "CashImg" && ok) {
+      hanldeCreateOrderWithHaveImage();
     }
   };
 
