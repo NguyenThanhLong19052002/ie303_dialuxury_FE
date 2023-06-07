@@ -152,7 +152,7 @@ export async function updateUser(user, _id) {
 export async function getAllOrders(_id) {
   try {
     const response = await axios.get(
-      `http://localhost:3001/orders/user/${_id}`
+      `http://localhost:3001/orders/user/${_id}/order`
     );
     let data = Object.values(response.data);
 
