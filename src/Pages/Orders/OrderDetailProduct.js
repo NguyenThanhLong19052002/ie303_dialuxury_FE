@@ -6,6 +6,7 @@ import {
   getAllOrdersByOrderId,
 } from "../Login1/helpers/helper";
 import ClipLoader from "react-spinners/ClipLoader";
+import moment from 'moment';
 
 const OrderDetailProducts = (props) => {
   const navigate = useNavigate();
@@ -66,7 +67,12 @@ const OrderDetailProducts = (props) => {
 
   function goBackClick() {
     navigate(-1);
+  };
+
+  const formatDate = (date) => {
+    return moment(date).format('DD/MM/YYYY');
   }
+
   return (
     <main>
       <ClipLoader
@@ -104,7 +110,7 @@ const OrderDetailProducts = (props) => {
                 </span>{" "}
                 <div className="text">
                   <h6 className="mb-1"> Ngày đặt hàng </h6>{" "}
-                  <p className="mb-1">{date}</p>{" "}
+                  <p className="mb-1">{formatDate(date)}</p>{" "}
                 </div>{" "}
               </article>{" "}
             </div>{" "}

@@ -185,3 +185,6 @@ GET http://localhost:3001/orders/order/HD01
 
 ###
 GET  http://localhost:3001/orders/HD01/get
+
+### lấy hình ảnh thanh toán hoá đơn
+GET http://localhost:3001/orders/HD20/getImage

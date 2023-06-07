@@ -19,6 +19,8 @@ import {
   CancelSuccessModal,
   DeliveredModal,
 } from './Modals/OrderModal';
+import moment from 'moment';
+
 const override: CSSProperties = {
   display: 'block',
   margin: '0 auto',
@@ -36,11 +38,14 @@ const Orders = () => {
   const [showCancelSuccess, setShowCancelSuccess] = useState(false);
   const [showDelivered, setShowDelivered] = useState(false);
   const [currentOrder, setCurrentOrder] = useState('');
+
   const handleCancelClose = () => setShowCancel(false);
+
   const handleCancelSuccessClose = () => {
     setShowCancelSuccess(false);
     window.location.reload();
   };
+
   const handleDeliveredClose = () => setShowDelivered(false);
 
   const handleCancelShow = (_orderid) => {
@@ -61,7 +66,7 @@ const Orders = () => {
     let cancelPromise = cancelOrderbyId(currentOrder);
     cancelPromise
       .then(function (res) {
-        console.log(res);
+        console.log(res.data);
         setShowCancel(false);
         handleCancelSuccessShow();
       })
@@ -74,6 +79,7 @@ const Orders = () => {
     let deliveredPromise = deliveredOrderbyId(currentOrder);
     deliveredPromise
       .then(function (res) {
+        console.log(res.data)
         window.location.reload();
       })
       .catch(function (error) {
@@ -98,6 +104,9 @@ const Orders = () => {
     });
   }, []); // The empty array as the second argument means this effect will only run once.
 
+  const formatDate = (date) => {
+    return moment(date).format('DD/MM/YYYY');
+  }
 
   return (
     <main>
@@ -132,7 +141,7 @@ const Orders = () => {
               <th scope="col"> Mã đơn hàng </th>
               <th scope="col"> Ngày đặt hàng </th>{' '}
               <th scope="col"> Tổng tiền </th>{' '}
-              <th scope="col"> Tình trạng giao hàng </th>
+              <th scope="col"> Tình trạng đơn hàng </th>
               <th scope="col" className="text-end">
                 Thao tác{' '}
               </th>{' '}
@@ -144,7 +153,7 @@ const Orders = () => {
                 <td>
                   <b>{order._id}</b>{' '}
                 </td>{' '}
-                <td>{order.createdAt}</td>{' '}
+                <td>{formatDate(order.createdAt)}</td>{' '}
                 <td>{order.totalPriceOrder.toLocaleString()} VND </td>{' '}
                 <td>
                   {' '}

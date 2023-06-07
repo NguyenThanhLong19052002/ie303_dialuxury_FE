@@ -4,10 +4,9 @@ axios.defaults.baseURL = "http://localhost:3001";
 
 export async function cancelOrderbyId(_orderid) {
   try {
-    console.log(_orderid);
-    const { data } = await axios.put("/cancelorder", {
-      tinhtrang: "Đã hủy",
-      _orderid,
+    // console.log(_orderid);
+    const { data } = await axios.put(`http://localhost:3001/orders/${_orderid}/updateStatus`, {
+      status: "Đã hủy"
     });
     return Promise.resolve({ data });
   } catch (error) {
