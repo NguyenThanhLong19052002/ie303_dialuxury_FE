@@ -31,7 +31,6 @@ const ViewUser = () => {
       let forgotPromise = getAllOrders(_id);
       forgotPromise.then(function (res) {
         setOrders(res);
-        console.log(orders);
         setIsLoading(false);
       });
 
