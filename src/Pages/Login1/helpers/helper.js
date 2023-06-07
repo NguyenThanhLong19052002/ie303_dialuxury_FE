@@ -162,6 +162,19 @@ export async function getAllOrders(_id) {
     return Promise.reject({ error: "can not get Orders" });
   }
 }
+export async function getAllOrdersByUserId(_id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/orders/user/${_id}`
+    );
+    let data = Object.values(response.data);
+
+    return Promise.resolve(data);
+  } catch (error) {
+    console.log(error);
+    return Promise.reject({ error: "can not get Orders" });
+  }
+}
 export async function getAllOrdersByOrderId(_id) {
   try {
     const { data } = await axios.get(

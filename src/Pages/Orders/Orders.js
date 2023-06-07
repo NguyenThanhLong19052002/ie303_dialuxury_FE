@@ -13,6 +13,7 @@ import {
   deliveredOrderbyId,
   getAllOrders,
   getUserbyId,
+  getAllOrdersByUserId
 } from '../Login1/helpers/helper';
 import {
   CancelModal,
@@ -89,7 +90,7 @@ const Orders = () => {
   
   useEffect(() => {
     // This function will run once when the component mounts.
-    let forgotPromise = getAllOrders(_id);
+    let forgotPromise = getAllOrdersByUserId(_id);
     forgotPromise.then(function (res) {
       const uniqueOrderIds = [];
       const uniqueData = [];
@@ -138,7 +139,7 @@ const Orders = () => {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col"> Mã đơn hàng </th>
+              <th scope="col"> Đơn hàng </th>
               <th scope="col"> Ngày đặt hàng </th>{' '}
               <th scope="col"> Tổng tiền </th>{' '}
               <th scope="col"> Tình trạng đơn hàng </th>
@@ -148,10 +149,10 @@ const Orders = () => {
             </tr>{' '}
           </thead>{' '}
           <tbody>
-            {orders?.map((order) => (
+            {orders?.map((order, index) => (
               <tr key={order._id}>
-                <td>
-                  <b>{order._id}</b>{' '}
+                <td style={{ paddingLeft: '2rem' }}>
+                  <b>{(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</b>{' '}
                 </td>{' '}
                 <td>{formatDate(order.createdAt)}</td>{' '}
                 <td>{order.totalPriceOrder.toLocaleString()} VND </td>{' '}

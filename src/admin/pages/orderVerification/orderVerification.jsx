@@ -8,22 +8,21 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import moment from "moment";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-
 import "./style.css";
 import "bootstrap";
 import { getAllOrdersAllUser } from "../../../Pages/Login1/helpers/helper";
+import ConfirmationModal from "../../../Pages/Cart/Components/ConfirmationModal";
+
 const VerifyOrder = () => {
   // const [details, setDetails] = useState("");
+  const [orderIdDelete, setOrderIdDelete] = useState("");
   const [orders, setOrders] = useState();
   const [openSnackbar, setOpenSnackbar] = useState(false); //lưu trạng thái của Snackbar
+  //tạo biến lưu trạng thái hiển thị hộp thoại thông báo
+  const [showModal, setShowModal] = useState(false);
 
-  //hàm đóng Snackbar
-  const handleSnackbarClose = () => {
-    setOpenSnackbar(false);
-  };
-
-  useEffect(function () {
-    async function getData() {
+  useEffect(() => {
+    function getData() {
       let forgotPromise = getAllOrdersAllUser();
       forgotPromise.then(function (res) {
         console.log(res);
@@ -42,13 +41,35 @@ const VerifyOrder = () => {
     getData();
 
     // Reset form sau khi gửi thành công
-  });
+  }, []);
 
-  const handleDeleteOrder = async (orderId) => {
-    await axios
+  //hàm đóng Snackbar
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
+  //tắt hộp thoại khi nhấn nút Hủy
+  const handleCancelDelete = () => {
+    setShowModal(false);
+  };
+
+  //Hiện hộp thoại cảnh báo khi nhấn nút Xóa
+  const handleDelete = (orderId) => {
+    setShowModal(true);
+    setOrderIdDelete(orderId);
+  };
+
+  const handleDeleteOrder = (orderId, index) => {
+    axios
       .delete(`http://localhost:3001/orders/${orderId}/delete`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setOrders((prevState) => {
+          const updatedAllOrders = [...prevState];
+          updatedAllOrders.splice(index, 1);
+          return updatedAllOrders;
+        });
+        setShowModal(false);
         setOpenSnackbar(true);
       })
       .catch((e) => {
@@ -65,7 +86,7 @@ const VerifyOrder = () => {
       <table className="table">
         <thead>
           <tr>
-            <th scope="col"> Mã đơn hàng </th>
+            <th scope="col"> Đơn hàng </th>
             <th scope="col"> Ngày đặt hàng </th>
             <th scope="col"> Phươnh thức thanh toán </th>
             <th scope="col"> Tổng tiền </th>
@@ -73,13 +94,14 @@ const VerifyOrder = () => {
             <th scope="col" className="text-center">
               Thao tác
             </th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {orders?.map((order) => (
+          {orders?.map((order, index) => (
             <tr key={order._id}>
-              <td>
-                <b>{order._id}</b>
+              <td style={{ paddingLeft: "2rem" }}>
+                <b>{index + 1 < 10 ? "0" + (index + 1) : index + 1}</b>
               </td>
               <td>{formatDate(order.createdAt)}</td>
               <td>{order.paymentMethod}</td>
@@ -106,17 +128,33 @@ const VerifyOrder = () => {
                 >
                   <i className="fas fa-eye" style={{ fontSize: "20px" }}></i>
                 </Link>
-                &nbsp;&nbsp;&nbsp;
-                <i
-                  className="fa fa-trash"
-                  style={{ fontSize: "20px", color: "red", cursor: 'pointer' }}
-                  onClick={() => handleDeleteOrder(order._id)}
-                ></i>
+              </td>
+              <td>
+                {order.status === "Đã hủy" && (
+                  <i
+                    className="fa fa-trash"
+                    style={{
+                      fontSize: "20px",
+                      color: "red",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleDeleteOrder(order._id, index)}
+                  ></i>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* <ConfirmationModal
+        show={showModal}
+        title={"Xác nhận"}
+        message="Bạn có chắc chắn muốn xóa?"
+        onConfirm={handleDeleteOrder(order._id, index)}
+        onCancel={handleCancelDelete}
+      /> */}
+
       <Snackbar
         open={openSnackbar}
         autoHideDuration={1500} // Thời gian tự động đóng Snackbar (ms)

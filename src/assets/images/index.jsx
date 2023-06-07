@@ -3,7 +3,7 @@ const images = {
   CashImg: require("./cashimg.png"),
   MomoQR: require("./MomoQR.jpg"),
   momoPayment: require("./momoPayment.jpg"),
-  ZalopayQR: require("./ZalopayQR.jpg"),
+  ZalopayQR: require("./ZalopayQR.png"),
   BIDVQR: require("./BIDVQR.jpg"),
   kimcuong: require("./kimcuong.jpg"),
   //Blog:
