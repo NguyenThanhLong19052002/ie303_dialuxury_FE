@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { confirmOrderbyId } from "../../../../Pages/Login1/helpers/helper";
 import axios from "axios";
+import { maxWidth } from "@mui/system";
 
 const ViewPayment = ({ inputs }) => {
   const [file, setFile] = useState("");
@@ -36,7 +37,7 @@ const ViewPayment = ({ inputs }) => {
 
   async function ConfirmOrder() {
     let confirmPromise = await confirmOrderbyId(location.state._orderid);
-    window.location.href = 'http://localhost:3000/ConfirmationNotification';
+    window.location.href = "http://localhost:3000/ConfirmationNotification";
   }
 
   // const navigateToConfirmationForm = () => {
@@ -58,7 +59,11 @@ const ViewPayment = ({ inputs }) => {
         <div className={styles.bottom}>
           <div className={styles.left}>
             {imageSrc !== "" ? (
-              <img src={imageSrc} alt="ảnh thanh toán hoá đơn" className={styles.img} />
+              <img
+                src={imageSrc}
+                alt="ảnh thanh toán hoá đơn"
+                className={styles.img}
+              />
             ) : (
               <img
                 src="https://static.mservice.io/img/momo-upload-api-220530104935-637895045756411980.jpg"
