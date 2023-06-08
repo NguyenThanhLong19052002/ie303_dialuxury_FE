@@ -11,7 +11,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import styles from "./Header.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -34,7 +34,7 @@ function Header() {
       .get("http://localhost:3001/cart")
       .then((response) => {
         setCart(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -47,6 +47,14 @@ function Header() {
     localStorage.removeItem("role");
     window.location.reload();
   };
+
+  //search products:
+  const [userQuery, setUserQuery] = useState("");
+  const handleChangeUserQuery = (e) => {
+    setUserQuery(e.target.value);
+  };
+
+  let navigate = useNavigate();
 
   return (
     <>
@@ -221,9 +229,17 @@ function Header() {
                 placeholder="Tìm kiếm"
                 className={"me-2 " + styles.formcontrol}
                 aria-label="Search"
+                value={userQuery}
+                onChange={handleChangeUserQuery}
               />
 
-              <Button variant="secondary" className={styles.button}>
+              <Button
+                variant="secondary"
+                className={styles.button}
+                onClick={() => {
+                  navigate(`/search?name=${userQuery}`);
+                }}
+              >
                 <SearchIcon />
               </Button>
             </Form>
