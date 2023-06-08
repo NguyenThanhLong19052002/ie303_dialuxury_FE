@@ -34,15 +34,14 @@ const ConfirmationNotification = () => {
         setMethod(methodd);
         setTotal(total);
         setOrderData(res);
-        
       })
       .catch((e) => {
         console.log(e);
       });
-    sendOrderConfirmationEmail();
+      
   }, []);
 
-  const sendOrderConfirmationEmail = async () => {
+  const sendOrderConfirmationEmail = () => {
     var cart;
     if (orderData !== null) {
       cart = orderData.map((data) => {
@@ -67,7 +66,7 @@ const ConfirmationNotification = () => {
         location.state.email,
         data
       );
-      await toast.promise(sendOrderConfirmationEmailPromise, {
+      toast.promise(sendOrderConfirmationEmailPromise, {
         loading: "Đang gửi mail...",
         success: "Gửi mail thành công",
         error: <b>Gửi mail thất bại!</b>,
@@ -123,19 +122,19 @@ const ConfirmationNotification = () => {
               <Toaster position="top-center" reverseOrder={false}></Toaster>
               {sentEmail && (
                 <span>
-                  Tin nhắn xác nhận đã được gửi vào email đăng ký của khách hàng
-                  {location.state.name}!
+                  Tin nhắn xác nhận đã được gửi vào email đăng ký của khách hàng {location.state.name}!
                 </span>
               )}
             </Card.Text>
 
             <Card.Text>
-              {/* <Button variant="primary" onClick={navigateToPaymentVerfication} style={{margin:"20px", marginTop:"5px"}}>Quay Lại Xác Nhận Thanh Toán</Button> */}
+              <Button variant="primary" onClick={sendOrderConfirmationEmail} style={{margin:"20px", marginTop:"5px"}} disabled={sentEmail}>Gửi mail xác nhận</Button>
 
               <Button
                 variant="primary"
                 onClick={navigateToOrderVerification}
                 style={{ margin: "20px", marginTop: "5px" }}
+                
               >
                 Quay Lại Xác Nhận Đơn Hàng
               </Button>
