@@ -23,7 +23,7 @@ function NewProductHomepage({ products }) {
                       {product.price} VNĐ
                     </Card.Text>
                     <Card.Text style={{ fontSize: "15px" }}>
-                      {product.sold} đã bán
+                      {product.quanlitySold} đã bán
                     </Card.Text>
                   </Card.Body>
                 </Card>
