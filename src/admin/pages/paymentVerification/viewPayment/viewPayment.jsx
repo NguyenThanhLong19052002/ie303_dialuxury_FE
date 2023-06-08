@@ -14,7 +14,7 @@ const ViewPayment = ({ inputs }) => {
   // lưu dữ liệu truyền vào từ trang giỏ hàng
   const location = useLocation();
 
-  //nếu không có dữ liệu truyền vào từ giỏ hàng thì chuyển hướng sang trang chủ
+  //nếu không có dữ liệu truyền vào thì chuyển hướng sang trang chủ
   if (!location.state) {
     window.location.replace("/orderVerification");
   }
@@ -35,9 +35,16 @@ const ViewPayment = ({ inputs }) => {
 
   const navigate = useNavigate();
 
-  async function ConfirmOrder() {
-    let confirmPromise = await confirmOrderbyId(location.state._orderid);
-    window.location.href = "http://localhost:3000/ConfirmationNotification";
+  function ConfirmOrder() {
+    let confirmPromise = confirmOrderbyId(location.state._orderid);
+    // window.location.href = "http://localhost:3000/ConfirmationNotification";
+    navigate("/ConfirmationNotification", {
+      state: {
+        _orderid: location.state._orderid,
+        email: location.state.email,
+        name: location.state.name
+      },
+    });
   }
 
   // const navigateToConfirmationForm = () => {

@@ -130,17 +130,15 @@ const VerifyOrder = () => {
                 </Link>
               </td>
               <td>
-                {order.status === "Đã hủy" && (
-                  <i
-                    className="fa fa-trash"
-                    style={{
-                      fontSize: "20px",
-                      color: "red",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleDeleteOrder(order._id, index)}
-                  ></i>
-                )}
+                <i
+                  className="fa fa-trash"
+                  style={{
+                    fontSize: "20px",
+                    color: "red",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleDeleteOrder(order._id, index)}
+                ></i>
               </td>
             </tr>
           ))}

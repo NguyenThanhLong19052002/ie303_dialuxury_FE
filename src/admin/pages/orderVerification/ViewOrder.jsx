@@ -43,7 +43,7 @@ const ViewOrder = () => {
       setStatus(status);
       setTotal(total);
       setTableData(tabledata);
-      // setUserID(_userid);
+      setUserID(_userid);
       let forgotPromise = getUserbyId(_userid);
       forgotPromise.then(function (res) {
         let { email, name, phoneNumber } = res.data;
@@ -67,9 +67,12 @@ const ViewOrder = () => {
     navigate(-1);
   }
 
-  async function ConfirmOrder() {
-    let confirmPromise = await confirmOrderbyId(_orderid);
-    window.location.href = 'http://localhost:3000/ConfirmationNotification'; 
+  function ConfirmOrder() {
+    let confirmPromise = confirmOrderbyId(_orderid);
+    // window.location.href = 'http://localhost:3000/ConfirmationNotification';
+    navigate("/ConfirmationNotification", {
+      state: { _orderid, email, name },
+    });
   }
 
   async function CancelOrder() {
@@ -247,7 +250,7 @@ const ViewOrder = () => {
                               // onClick={ConfirmOrder}
                               onClick={() => {
                                 navigate("/paymentView", {
-                                  state: { _orderid },
+                                  state: { _orderid, email, name },
                                 });
                               }}
                               style={{ marginLeft: "20px" }}

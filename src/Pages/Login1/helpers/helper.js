@@ -52,6 +52,17 @@ export async function sentOTP(email) {
     return Promise.reject({ error: "Error when sent OTP" });
   }
 }
+export async function sendOrderConfirmEmail(email, dataOrder) {
+  try {
+    const { data } = await axios.post(
+      `http://localhost:3001/user/${email}/sendConfirmOrderEmail`, 
+      dataOrder
+    );
+    return Promise.resolve({ data });
+  } catch (error) {
+    return Promise.reject({ error: "Error when sent Email" });
+  }
+}
 export async function getUserbyId(_id) {
   try {
     const response = await axios.get(`http://localhost:3001/user/${_id}`);
