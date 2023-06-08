@@ -47,6 +47,7 @@ import VouchersDetailsAdmin from "../admin/pages/VouchersDetails/Screens/voucher
 import ProductsPageAdmin from "../admin/pages/ProductsPage/Screens/productsPage";
 import AddProduct from "../admin/pages/ProductsPage/Screens/addProduct";
 import EditProduct from "../admin/pages/ProductsPage/Screens/editProduct";
+import ProductDetailsAdmin from "../admin/pages/ProductsPage/Screens/productDetails";
 import AddVoucher from "../admin/pages/VouchersPage/Screens/addVoucher";
 import EditVoucher from "../admin/pages/VouchersPage/Screens/editVoucher";
 import AddServiceType from "../admin/pages/service/addServiceType/addServiceType";
@@ -349,6 +350,14 @@ const adminRoutes = [
     component: (
       <AuthorizedUserIsAdmin>
         <EditProduct />
+      </AuthorizedUserIsAdmin>
+    ),
+  },
+  {
+    path: "/admin/productsPage/:id",
+    component: (
+      <AuthorizedUserIsAdmin>
+        <ProductDetailsAdmin />
       </AuthorizedUserIsAdmin>
     ),
   },

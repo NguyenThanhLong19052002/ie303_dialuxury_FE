@@ -30,7 +30,7 @@ function ProductList({ products }) {
                       {product.price} đ
                     </Card.Text>
                     <Card.Text style={{ textAlign: "end", fontSize: "14px" }}>
-                      {product.quantity_sold} đã bán
+                      {product.quanlitySold} đã bán
                     </Card.Text>
                   </Card.Body>
                 </Card>

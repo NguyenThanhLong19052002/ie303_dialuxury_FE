@@ -118,12 +118,12 @@ function ProductsPage() {
                 >
                   Loại sản phẩm
                 </TableCell>
-                <TableCell
+                {/* <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
                 >
                   Số lượng
-                </TableCell>
+                </TableCell> */}
                 <TableCell
                   className={styles.tableCell + " text-center"}
                   style={{ fontSize: "16px", fontWeight: "500" }}
@@ -194,12 +194,12 @@ function ProductsPage() {
                     >
                       {product.category}
                     </TableCell>
-                    <TableCell
+                    {/* <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {
                         navigate(`/admin/productsPage/${product.productid}`);
                       }}
-                    ></TableCell>
+                    ></TableCell> */}
                     <TableCell
                       className={styles.tableCell + " text-center"}
                       onClick={() => {

@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col, Card} from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function ProductHomepage({ products }) {
-
   const visibleProducts = products;
   return (
     <>
@@ -23,8 +22,10 @@ function ProductHomepage({ products }) {
                     <Card.Text style={{ color: "#e7b475", fontWeight: "500" }}>
                       {product.price}
                     </Card.Text>
-                    <Card.Text style={{ textAlign: "center", fontSize: "15px" }}>
-                      {product.sold}
+                    <Card.Text
+                      style={{ textAlign: "center", fontSize: "15px" }}
+                    >
+                      {product.quanlitySold}
                     </Card.Text>
                   </Card.Body>
                 </Card>
