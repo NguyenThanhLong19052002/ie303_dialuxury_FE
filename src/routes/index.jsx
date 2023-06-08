@@ -176,7 +176,7 @@ const adminRoutes = [
     ),
   },
   {
-    path: "/users/:_id",
+    path: "/user/:_id/order",
     component: (
       <AuthorizedUserIsAdmin>
         <ViewUser />
@@ -184,7 +184,7 @@ const adminRoutes = [
     ),
   },
   {
-    path: "/user/order/detail/:_orderid",
+    path: "/user/order/detail/:orderId",
     component: (
       <AuthorizedUserIsAdmin>
         <OrderView />

@@ -13,12 +13,15 @@ import {
   deliveredOrderbyId,
   getAllOrders,
   getUserbyId,
+  getAllOrdersByUserId
 } from '../Login1/helpers/helper';
 import {
   CancelModal,
   CancelSuccessModal,
   DeliveredModal,
 } from './Modals/OrderModal';
+import moment from 'moment';
+
 const override: CSSProperties = {
   display: 'block',
   margin: '0 auto',
@@ -36,28 +39,35 @@ const Orders = () => {
   const [showCancelSuccess, setShowCancelSuccess] = useState(false);
   const [showDelivered, setShowDelivered] = useState(false);
   const [currentOrder, setCurrentOrder] = useState('');
+
   const handleCancelClose = () => setShowCancel(false);
+
   const handleCancelSuccessClose = () => {
     setShowCancelSuccess(false);
     window.location.reload();
   };
+
   const handleDeliveredClose = () => setShowDelivered(false);
+
   const handleCancelShow = (_orderid) => {
     setShowCancel(true);
     setCurrentOrder(_orderid);
   };
+
   const handleCancelSuccessShow = () => {
     setShowCancelSuccess(true);
   };
+
   const handleDeliveredShow = (_orderid) => {
     setShowDelivered(true);
     setCurrentOrder(_orderid);
   };
+
   const handleCancelOrder = async () => {
     let cancelPromise = cancelOrderbyId(currentOrder);
     cancelPromise
       .then(function (res) {
-        console.log(res);
+        console.log(res.data);
         setShowCancel(false);
         handleCancelSuccessShow();
       })
@@ -65,19 +75,22 @@ const Orders = () => {
         console.log(error);
       });
   };
+
   const handleDelivered = async () => {
     let deliveredPromise = deliveredOrderbyId(currentOrder);
     deliveredPromise
       .then(function (res) {
+        console.log(res.data)
         window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+  
   useEffect(() => {
     // This function will run once when the component mounts.
-    let forgotPromise = getAllOrders(_id);
+    let forgotPromise = getAllOrdersByUserId(_id);
     forgotPromise.then(function (res) {
       const uniqueOrderIds = [];
       const uniqueData = [];
@@ -92,6 +105,9 @@ const Orders = () => {
     });
   }, []); // The empty array as the second argument means this effect will only run once.
 
+  const formatDate = (date) => {
+    return moment(date).format('DD/MM/YYYY');
+  }
 
   return (
     <main>
@@ -123,22 +139,22 @@ const Orders = () => {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col"> Mã đơn hàng </th>
+              <th scope="col"> Đơn hàng </th>
               <th scope="col"> Ngày đặt hàng </th>{' '}
               <th scope="col"> Tổng tiền </th>{' '}
-              <th scope="col"> Tình trạng giao hàng </th>
+              <th scope="col"> Tình trạng đơn hàng </th>
               <th scope="col" className="text-end">
                 Thao tác{' '}
               </th>{' '}
             </tr>{' '}
           </thead>{' '}
           <tbody>
-            {orders?.map((order) => (
+            {orders?.map((order, index) => (
               <tr key={order._id}>
-                <td>
-                  <b>{order._id}</b>{' '}
+                <td style={{ paddingLeft: '2rem' }}>
+                  <b>{(index + 1) < 10 ? '0' + (index + 1) : (index + 1)}</b>{' '}
                 </td>{' '}
-                <td>{order.createdAt}</td>{' '}
+                <td>{formatDate(order.createdAt)}</td>{' '}
                 <td>{order.totalPriceOrder.toLocaleString()} VND </td>{' '}
                 <td>
                   {' '}

@@ -151,7 +151,24 @@ export async function updateUser(user, _id) {
 
 export async function getAllOrders(_id) {
   try {
-    const { data } = await axios.get(`http://localhost:3001/orders/user/${_id}`);
+    const response = await axios.get(
+      `http://localhost:3001/orders/user/${_id}/order`
+    );
+    let data = Object.values(response.data);
+
+    return Promise.resolve(data);
+  } catch (error) {
+    console.log(error);
+    return Promise.reject({ error: "can not get Orders" });
+  }
+}
+export async function getAllOrdersByUserId(_id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/orders/user/${_id}`
+    );
+    let data = Object.values(response.data);
+
     return Promise.resolve(data);
   } catch (error) {
     console.log(error);
@@ -160,7 +177,9 @@ export async function getAllOrders(_id) {
 }
 export async function getAllOrdersByOrderId(_id) {
   try {
-    const { data } = await axios.get(`http://localhost:3001/orders/order/${_id}`);
+    const { data } = await axios.get(
+      `http://localhost:3001/orders/order/${_id}`
+    );
     return Promise.resolve(data);
   } catch (error) {
     console.log(error);
@@ -169,8 +188,8 @@ export async function getAllOrdersByOrderId(_id) {
 }
 export async function getAllOrdersAllUser() {
   try {
-    const { data } = await axios.get("/orderall");
-    console.log(await axios.get("/orderall"));
+    const { data } = await axios.get("http://localhost:3001/orders");
+    // console.log(await axios.get("/orderall"));
     return Promise.resolve(data);
   } catch (error) {
     console.log(error);
@@ -179,7 +198,9 @@ export async function getAllOrdersAllUser() {
 }
 export async function getOrderbyId(_orderid) {
   try {
-    const { data } = await axios.get(`http://localhost:3001/orders/${_orderid}/get`);
+    const { data } = await axios.get(
+      `http://localhost:3001/orders/${_orderid}/get`
+    );
     return Promise.resolve({ data });
   } catch (error) {
     return Promise.reject({ error: "can not get order" });
@@ -187,10 +208,9 @@ export async function getOrderbyId(_orderid) {
 }
 export async function cancelOrderbyId(_orderid) {
   try {
-    console.log(_orderid);
-    const { data } = await axios.put("/cancelorder", {
-      tinhtrang: "Đã hủy",
-      _orderid,
+    // console.log(_orderid);
+    const { data } = await axios.put(`http://localhost:3001/orders/${_orderid}/updateStatus`, {
+      status: "Đã hủy"
     });
     return Promise.resolve({ data });
   } catch (error) {
@@ -201,10 +221,9 @@ export async function cancelOrderbyId(_orderid) {
 
 export async function deliveredOrderbyId(_orderid) {
   try {
-    console.log(_orderid);
-    const { data } = await axios.put("/deliveredorder", {
-      tinhtrang: "Đã giao hàng",
-      _orderid,
+    // console.log(_orderid);
+    const { data } = await axios.put(`http://localhost:3001/orders/${_orderid}/updateStatus`, {
+      status: "Đã giao hàng"
     });
     return Promise.resolve({ data });
   } catch (error) {
@@ -214,10 +233,9 @@ export async function deliveredOrderbyId(_orderid) {
 }
 export async function confirmOrderbyId(_orderid) {
   try {
-    console.log(_orderid);
-    const { data } = await axios.put("/confirmorder", {
-      tinhtrang: "Đang giao hàng",
-      _orderid,
+    // console.log(_orderid);
+    const { data } = await axios.put(`http://localhost:3001/orders/${_orderid}/updateStatus`, {
+      status: "Đang giao hàng"
     });
     return Promise.resolve({ data });
   } catch (error) {

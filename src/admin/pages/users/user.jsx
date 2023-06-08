@@ -25,8 +25,8 @@ const Users = () => {
     setTableData(data);
   }
 
-  async function deleteSVT(_id) {
-    const response = await axios.delete(`/user/delete/${_id}`);
+  async function deleteSVT(userId) {
+    const response = await axios.delete(`/user/delete/${userId}`);
     getData();
   }
 
@@ -72,7 +72,7 @@ const Users = () => {
             <TableBody>
               {tableData?.map((data, index) => (
                 <TableRow
-                  key={data._id}
+                  key={data.userId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell className={styles.tableCell + " text-center"}>
@@ -93,13 +93,13 @@ const Users = () => {
                   <TableCell className={styles.tableCell + " text-center"}>
                     <div className={styles.cellAction}>
                       <Link
-                        to={`/users/${data._id}`}
+                        to={`/user/${data.userId}/order`}
                         style={{ textDecoration: "none" }}
                       >
                         <div className={styles.viewButton}>View</div>
                       </Link>{" "}
                       <Button
-                        onClick={() => deleteSVT(data._id)}
+                        onClick={() => deleteSVT(data.userId)}
                         className={styles.deleteButton}
                       >
                         Delete

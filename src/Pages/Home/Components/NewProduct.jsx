@@ -1,9 +1,8 @@
 import React from "react";
-import { Container, Row, Col, Card} from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function NewProductHomepage({ products }) {
-
   const visibleProducts = products;
   return (
     <>
@@ -13,7 +12,7 @@ function NewProductHomepage({ products }) {
           {/* visibleProducts = 12 */}
           {visibleProducts.map((product) => (
             <Col key={product.productid} sm={6} md={4} lg={3}>
-              <Link to={`/productsdetail/${product._id}`}>
+              <Link to={`/productsdetail/${product.productid}`}>
                 <Card style={{ background: "#f7f7f7", marginBottom: "30px" }}>
                   <Card.Body style={{ textAlign: "center" }}>
                     <Card.Img src={product.image}></Card.Img>
@@ -23,9 +22,9 @@ function NewProductHomepage({ products }) {
                     <Card.Text style={{ color: "#e7b475", fontWeight: "500" }}>
                       {product.price} VNĐ
                     </Card.Text>
-                    {/* <Card.Text style={{ textAlign: "center", fontSize: "15px" }}>
-                      {product.sold}
-                    </Card.Text> */}
+                    <Card.Text style={{ fontSize: "15px" }}>
+                      {product.sold} đã bán
+                    </Card.Text>
                   </Card.Body>
                 </Card>
               </Link>

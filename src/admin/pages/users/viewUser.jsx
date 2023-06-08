@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Row, Container, Col } from 'react-bootstrap';
-import axios from 'axios';
-import { useNavigate, Link, useParams } from 'react-router-dom';
-import './style.css';
-import 'bootstrap';
-import { getAllOrders } from '../../../Pages/Login1/helpers/helper';
+import React, { useEffect, useState } from "react";
+import { Form, Button, Row, Container, Col } from "react-bootstrap";
+import axios from "axios";
+import { useNavigate, Link, useParams } from "react-router-dom";
+import "./style.css";
+import "bootstrap";
+import { getAllOrders } from "../../../Pages/Login1/helpers/helper";
 const ViewUser = () => {
   const { _id } = useParams();
   const navigate = useNavigate();
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [email, setEmail] = useState('');
-  const [orders, setOrders] = useState();
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   // const [details, setDetails] = useState("");
 
   useEffect(function () {
     try {
       async function getData() {
-        const response = await axios.get(
-          `https://dialuxury.onrender.com/userid/${_id}`
-        );
-        console.log(response.data); // Thêm sản phẩm vào danh sách
-        setName(response.data.name);
-        setEmail(response.data.email);
-        setPhone(response.data.phone);
-        setAddress(response.data.address);
-        let forgotPromise = getAllOrders(_id);
-        forgotPromise.then(function (res) {
-          setOrders(res);
-          setIsLoading(false);
-        });
+        // const response = await axios.get(
+        //   `http://localhost:3001/orders/user/${_id}/orde`
+        // );
+        // console.log(response.data); // Thêm sản phẩm vào danh sách
+        // setName(response.data.name);
+        // setEmail(response.data.email);
+        // setPhone(response.data.phone);
+        // setAddress(response.data.address);
       }
+      let forgotPromise = getAllOrders(_id);
+      forgotPromise.then(function (res) {
+        setOrders(res);
+        setIsLoading(false);
+      });
 
       getData();
 
@@ -48,56 +48,56 @@ const ViewUser = () => {
   // };
 
   return (
-    <Container style={{ width: '1000px' }}>
+    <Container style={{ width: "1000px" }}>
       <table className="table">
         <thead>
           <tr>
             <th scope="col"> Mã đơn hàng </th>
-            <th scope="col"> Ngày đặt hàng </th>{' '}
-            <th scope="col"> Tổng tiền </th>{' '}
+            <th scope="col"> Ngày đặt hàng </th>{" "}
+            <th scope="col"> Tổng tiền </th>{" "}
             <th scope="col"> Tình trạng giao hàng </th>
             <th scope="col" className="text-end">
-              Thao tác{' '}
-            </th>{' '}
-          </tr>{' '}
-        </thead>{' '}
+              Thao tác{" "}
+            </th>{" "}
+          </tr>{" "}
+        </thead>{" "}
         <tbody>
-          {orders?.map((order) => (
-            <tr key={order._id}>
+          {orders.map((order) => (
+            <tr key={order.id}>
               <td>
-                <b>{order.mahd}</b>{' '}
-              </td>{' '}
-              <td>{order.ngaylap}</td>{' '}
-              <td>{order.tongtien.toLocaleString()} VND </td>{' '}
+                <b>{order.id}</b>{" "}
+              </td>{" "}
+              <td>{order.createdAt}</td>{" "}
+              <td>{order.totalPriceOrder.toLocaleString()} VND </td>{" "}
               <td>
-                {' '}
+                {" "}
                 <span
                   className={
-                    order.tinhtrang === 'Đã giao hàng'
-                      ? 'text-success'
-                      : order.tinhtrang === 'Đang xử lý'
-                      ? 'text-info'
-                      : order.tinhtrang === 'Đang giao hàng'
-                      ? 'text-warning'
-                      : 'text-danger'
+                    order.status === "Đã giao hàng"
+                      ? "text-success"
+                      : order.status === "Đang xử lý"
+                      ? "text-info"
+                      : order.status === "Đang giao hàng"
+                      ? "text-warning"
+                      : "text-danger"
                   }
                 >
-                  {order.tinhtrang}{' '}
-                </span>{' '}
-              </td>{' '}
+                  {order.status}{" "}
+                </span>{" "}
+              </td>{" "}
               <td className="d-flex justify-content-end align-item-center">
                 <Link
-                  to={`/user/order/detail/${order._id}`}
+                  to={`/user/order/detail/${order.id}`}
                   className="text-success"
                 >
-                  <i className="fas fa-eye" style={{ fontSize: '20px' }}>
-                    {' '}
-                  </i>{' '}
-                </Link>{' '}
-              </td>{' '}
+                  <i className="fas fa-eye" style={{ fontSize: "20px" }}>
+                    {" "}
+                  </i>{" "}
+                </Link>{" "}
+              </td>{" "}
             </tr>
           ))}
-        </tbody>{' '}
+        </tbody>{" "}
       </table>
     </Container>
   );

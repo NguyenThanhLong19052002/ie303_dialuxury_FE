@@ -4,10 +4,9 @@ axios.defaults.baseURL = "http://localhost:3001";
 
 export async function cancelOrderbyId(_orderid) {
   try {
-    console.log(_orderid);
-    const { data } = await axios.put("/cancelorder", {
-      tinhtrang: "Đã hủy",
-      _orderid,
+    // console.log(_orderid);
+    const { data } = await axios.put(`http://localhost:3001/orders/${_orderid}/updateStatus`, {
+      status: "Đã hủy"
     });
     return Promise.resolve({ data });
   } catch (error) {
@@ -37,18 +36,20 @@ export async function scheduleMail(date, email) {
     return Promise.reject({ error: "can not schedule" });
   }
 }
-export async function getOrderbyId(_orderid) {
+export async function getOrderbyId(orderId) {
   try {
-    const { data } = await axios.get(`/orderdetail/${_orderid}`);
-    return Promise.resolve({ data });
+    const response = await axios.get(
+      `http://localhost:3001/orders/order/${orderId}`
+    );
+    return Promise.resolve(Object.values(response.data));
   } catch (error) {
-    return Promise.reject({ error: "can not get order" });
+    return Promise.reject({ error: "can not get order detail" });
   }
 }
 export async function getUserbyId(_id) {
   try {
-    const { data } = await axios.get(`/userid/${_id}`);
-    return Promise.resolve({ data });
+    const response = await axios.get(`http://localhost:3001/user/${_id}`);
+    return Promise.resolve(response);
   } catch (error) {
     return Promise.reject({ error: "Can not get user" });
   }

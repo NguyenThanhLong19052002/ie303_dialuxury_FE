@@ -5,10 +5,12 @@ import {useNavigate} from 'react-router-dom';
 
 const ConfirmationNotification = () => {
   const navigate = useNavigate();
+
   const navigateToPaymentVerfication = () => {
     // 👇️ navigate to /contacts
     navigate('/paymentVerfication');
   };
+  
   const navigateToOrderVerification = () => {
     // 👇️ navigate to /contacts
     navigate('/orderVerification');
@@ -24,17 +26,17 @@ const ConfirmationNotification = () => {
       <Card.Body>
         <Card.Title style={{color: 'green'}}>Xác Nhận Thành Công</Card.Title>
         <Card.Text>
-          Bảng thông tin đã được xác nhận <br/>
-          Tin nhắn xác nhận đã được gửi vào gmail đăng ký của bạn!
+          Đơn hàng đã được xác nhận <br/>
+          Tin nhắn xác nhận đã được gửi vào email đăng ký của bạn!
         </Card.Text>
         
         <Card.Text>
-        <Button variant="primary" onClick={navigateToPaymentVerfication} style={{margin:"20px", marginTop:"5px"}}>Quay Lại Xác Nhận Thanh Toán</Button>
+        {/* <Button variant="primary" onClick={navigateToPaymentVerfication} style={{margin:"20px", marginTop:"5px"}}>Quay Lại Xác Nhận Thanh Toán</Button> */}
         
-        <Button variant="primary" onClick={navigateToOrderVerification}  style={{margin:"20px" , marginTop:"5px"}}>Quay Lại Xác Nhận Đặt Hàng</Button>
+        <Button variant="primary" onClick={navigateToOrderVerification}  style={{margin:"20px" , marginTop:"5px"}}>Quay Lại Xác Nhận Đơn Hàng</Button>
         </Card.Text>
       </Card.Body>
-      <Card.Footer className="text-muted">05/05/2023</Card.Footer>
+      {/* <Card.Footer className="text-muted">1/1/2002</Card.Footer> */}
     </Card>
      
 

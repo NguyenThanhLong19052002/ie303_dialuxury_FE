@@ -1,17 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./viewPayment.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import { confirmOrderbyId } from "../../../../Pages/Login1/helpers/helper";
+import axios from "axios";
+import { maxWidth } from "@mui/system";
+
 const ViewPayment = ({ inputs }) => {
   const [file, setFile] = useState("");
+  // const [orderId, setOrderId] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
+
+  // lưu dữ liệu truyền vào từ trang giỏ hàng
+  const location = useLocation();
+
+  //nếu không có dữ liệu truyền vào từ giỏ hàng thì chuyển hướng sang trang chủ
+  if (!location.state) {
+    window.location.replace("/orderVerification");
+  }
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/orders/${location.state._orderid}/getImage`, {
+        responseType: "blob",
+      })
+      .then((response) => {
+        const imageUrl = URL.createObjectURL(response.data);
+        setImageSrc(imageUrl);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   const navigate = useNavigate();
-  const navigateToConfirmationForm = () => {
-    // 👇️ navigate to /contacts
-    navigate("/ConfirmationNotification");
-  };
+
+  async function ConfirmOrder() {
+    let confirmPromise = await confirmOrderbyId(location.state._orderid);
+    window.location.href = "http://localhost:3000/ConfirmationNotification";
+  }
+
+  // const navigateToConfirmationForm = () => {
+  //   // 👇️ navigate to /contacts
+  //   navigate("/ConfirmationNotification");
+  // };
+
   return (
     <div className={styles.new}>
-      <div className={styles.newContainer}>
+      <div
+        className={styles.newContainer}
+        style={{ width: "100vw", height: "fit-content" }}
+      >
         <div>
           <h3>
             <b>Xác Nhận Thanh Toán</b>
@@ -19,14 +58,22 @@ const ViewPayment = ({ inputs }) => {
         </div>
         <div className={styles.bottom}>
           <div className={styles.left}>
-            <img
-              src="https://static.mservice.io/img/momo-upload-api-220530104935-637895045756411980.jpg"
-              alt=""
-              className={styles.img}
-            />
+            {imageSrc !== "" ? (
+              <img
+                src={imageSrc}
+                alt="ảnh thanh toán hoá đơn"
+                className={styles.img}
+              />
+            ) : (
+              <img
+                src="https://static.mservice.io/img/momo-upload-api-220530104935-637895045756411980.jpg"
+                alt="ảnh thanh toán hoá đơn"
+                className={styles.img}
+              />
+            )}
           </div>
           <div className={styles.right}>
-            <form>
+            {/* <form>
               <div class={styles.formInput}>
                 <div className="row my-2">
                   <div className="col text-end">
@@ -83,13 +130,13 @@ const ViewPayment = ({ inputs }) => {
                   </div>
                 </div>
               </div>
-            </form>
+            </form> */}
             <Button
               variant="primary"
-              onClick={navigateToConfirmationForm}
+              onClick={() => ConfirmOrder()}
               style={{ float: "right", margin: "30px" }}
             >
-              Xác Nhận
+              Xác nhận giao hàng
             </Button>{" "}
           </div>
         </div>

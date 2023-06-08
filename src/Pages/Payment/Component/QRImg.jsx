@@ -8,7 +8,7 @@ export default ({ bank, total, name }) => {
           src={images[bank]}
           alt="ma QR"
           className="w-50 h-50 rounded border border-3 border-black"
-          style={{ maxWidth: "300px" }}
+          style={{ maxWidth: "300px", height: '300px' }}
         ></img>
       </div>
       {bank !== "CashImg" && (
