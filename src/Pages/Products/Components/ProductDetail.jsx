@@ -116,10 +116,7 @@ function Product() {
           <p>Mã: {product?.productid || "Product"}</p>
           <Row>
             <Col md={2}>
-              <p>Đã bán: 4</p>
-            </Col>
-            <Col>
-              <p>Còn hàng</p>
+              <p>Đã bán: {product?.quantitySold}</p>
             </Col>
           </Row>
           <h4>Giá: {formatCurrency(product?.price || 1000000)}</h4>
@@ -178,11 +175,11 @@ function Product() {
               </ListGroupItem>
               <ListGroupItem>
                 <strong>Khối lượng: </strong>{" "}
-                {product?.mass || "Chưa có thông số"}
+                {product?.mass || "Chưa có thông số"} g
               </ListGroupItem>
               <ListGroupItem>
                 <strong>Kích thước: </strong>{" "}
-                {product?.size || "Chưa có thông số"}
+                {product?.size || "Chưa có thông số"} mm
               </ListGroupItem>
               <ListGroupItem>
                 <strong>Màu sắc: </strong>{" "}

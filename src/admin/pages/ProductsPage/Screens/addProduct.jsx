@@ -15,6 +15,19 @@ const AddProductForm = () => {
   const [dvt, setdvt] = useState("");
   // const [details, setDetails] = useState("");
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -48,13 +61,8 @@ const AddProductForm = () => {
     }
   };
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setImage(file);
-  // };
-
   return (
-    <Container style={{width:"1300px"}}>
+    <Container style={{ width: "1300px" }}>
       <Row className="d-flex justify-content-center">
         <Col
           md={6}
@@ -93,13 +101,13 @@ const AddProductForm = () => {
             <Form.Group controlId="image">
               <Form.Label>Ảnh sản phẩm:</Form.Label>
               <Form.Control
-                // type="file"
-                // accept="image/*"
-                // onChange={handleImageChange}
-                type="text"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
               />
+              {image && (
+                <img src={image} alt="Preview" style={{ marginTop: "10px" }} />
+              )}
             </Form.Group>
             <Form.Group controlId="category">
               <Form.Label>Thể loại:</Form.Label>
