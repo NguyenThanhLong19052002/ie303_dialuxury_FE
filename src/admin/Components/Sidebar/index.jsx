@@ -77,12 +77,12 @@ function AdminSidebar() {
             </li>
           </Link>
 
-          <Link to="/paymentVerfication" style={{ textDecoration: "none" }}>
+          {/* <Link to="/paymentVerfication" style={{ textDecoration: "none" }}>
             <li>
               <PaidIcon className={styles.icon} />
               <span>Xác Nhận Thanh Toán</span>
             </li>
-          </Link>
+          </Link> */}
           <Link to="/orderVerification" style={{ textDecoration: "none" }}>
             <li>
               <LocalShippingIcon className={styles.icon} />
