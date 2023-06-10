@@ -85,7 +85,7 @@ function ProductDetails() {
             <TableBody>
               <TableRow key={product.id}>
                 <TableCell className={styles.tableCell + " text-center"}>
-                  {product.quanlitySold}
+                  {product.quantitySold}
                 </TableCell>
                 {/* <TableCell
                   className={styles.tableCell + " text-center"}

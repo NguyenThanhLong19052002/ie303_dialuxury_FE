@@ -4,13 +4,20 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import ProductHomepage from "./Components/Products";
 import NewProductHomepage from "./Components/NewProduct";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Button } from "react-bootstrap";
 import axios from "axios";
+
 function Home() {
   const [newProduct, setnewProduct] = useState([]);
+  const [quantitySold, setQuantitySold] = useState([]);
+  const [showMoreSold, setShowMoreSold] = useState(false);
+  const [showMoreNew, setShowMoreNew] = useState(false);
+  const [soldProductCount, setSoldProductCount] = useState(4);
+  const [newProductCount, setNewProductCount] = useState(4);
 
   useEffect(() => {
     loadNewProduct();
+    sortedQuantitySold();
   }, []);
 
   const loadNewProduct = async () => {
@@ -24,52 +31,42 @@ function Home() {
         console.log(error);
       });
   };
-  const products = [
-    {
-      id: "p1",
-      productimage:
-        "https://cdn.pnj.io/images/thumbnails/300/300/detailed/124/gnxmxmy006396-nhan-vang-18k-dinh-da-cz-pnj.png",
-      name: "Nhẫn vàng CZ",
-      price: "10.000.000 đ",
-      sold: "100 đã bán",
-    },
-    {
-      id: "p2",
-      productimage:
-        "https://cdn.pnj.io/images/thumbnails/300/300/detailed/124/gnxmxmy006396-nhan-vang-18k-dinh-da-cz-pnj.png",
-      name: "Nhẫn vàng CZ",
-      price: "10.000.000 đ",
-      sold: "100 đã bán",
-    },
-    {
-      id: "p3",
-      productimage:
-        "https://cdn.pnj.io/images/thumbnails/300/300/detailed/124/gnxmxmy006396-nhan-vang-18k-dinh-da-cz-pnj.png",
-      name: "Nhẫn vàng CZ",
-      price: "10.000.000 đ",
-      sold: "100 đã bán",
-    },
-    {
-      id: "p4",
-      productimage:
-        "https://cdn.pnj.io/images/thumbnails/300/300/detailed/124/gnxmxmy006396-nhan-vang-18k-dinh-da-cz-pnj.png",
-      name: "Nhẫn vàng CZ",
-      price: "10.000.000 đ",
-      sold: "100 đã bán",
-    },
-  ];
+
+  const sortedQuantitySold = async () => {
+    axios
+      .get("http://localhost:3001/product/sortedQuantitySold")
+      .then((response) => {
+        setQuantitySold(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleShowMoreSold = () => {
+    setSoldProductCount((prevCount) => prevCount + 8);
+    setShowMoreSold(true);
+  };
+
+  const handleShowLessSold = () => {
+    setSoldProductCount(4);
+    setShowMoreSold(false);
+  };
+
+  const handleShowMoreNew = () => {
+    setNewProductCount((prevCount) => prevCount + 8);
+    setShowMoreNew(true);
+  };
+
+  const handleShowLessNew = () => {
+    setNewProductCount(4);
+    setShowMoreNew(false);
+  };
 
   return (
     <div>
       <Container fluid>
-        <Row>
-          <img
-            src={require("../../assets/images/banner-main-homepage-img.jpg")}
-            alt=""
-            className={styles.banner}
-            style={{ maxWidth: "100%", padding: "0" }}
-          />
-        </Row>
         <Row>
           <h4
             className="pb-3"
@@ -82,7 +79,21 @@ function Home() {
           >
             Sản phẩm bán chạy
           </h4>
-          <ProductHomepage products={products} />;
+          <ProductHomepage products={quantitySold.slice(0, soldProductCount)} />
+          {!showMoreSold && quantitySold.length > 4 && (
+            <div className="text-center mt-3">
+              <Button onClick={handleShowMoreSold} variant="secondary">
+                Xem thêm
+              </Button>
+            </div>
+          )}
+          {showMoreSold && (
+            <div className="text-center mt-3">
+              <Button onClick={handleShowLessSold} variant="secondary">
+                Ẩn bớt
+              </Button>
+            </div>
+          )}
         </Row>
         <Row>
           <h4
@@ -96,7 +107,21 @@ function Home() {
           >
             Sản phẩm mới
           </h4>
-          <NewProductHomepage products={newProduct} />;
+          <NewProductHomepage products={newProduct.slice(0, newProductCount)} />
+          {!showMoreNew && newProduct.length > 4 && (
+            <div className="text-center mt-3">
+              <Button onClick={handleShowMoreNew} variant="secondary">
+                Xem thêm
+              </Button>
+            </div>
+          )}
+          {showMoreNew && (
+            <div className="text-center mt-3">
+              <Button onClick={handleShowLessNew} variant="secondary">
+                Ẩn bớt
+              </Button>
+            </div>
+          )}
         </Row>
       </Container>
     </div>

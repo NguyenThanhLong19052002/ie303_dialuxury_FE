@@ -11,11 +11,11 @@ function ProductHomepage({ products }) {
         <Row className="mx-4 mt-5">
           {/* visibleProducts = 12 */}
           {visibleProducts.map((product) => (
-            <Col key={product.id} sm={6} md={4} lg={3}>
-              <Link to={`/productsdetail/${product._id}`}>
+            <Col key={product.productid} sm={6} md={4} lg={3}>
+              <Link to={`/productsdetail/${product.productid}`}>
                 <Card style={{ background: "#f7f7f7", marginBottom: "30px" }}>
                   <Card.Body style={{ textAlign: "center" }}>
-                    <Card.Img src={product.productimage}></Card.Img>
+                    <Card.Img src={product.image}></Card.Img>
                     <Card.Title style={{ fontWeight: "200" }}>
                       {product.name}
                     </Card.Title>
@@ -25,7 +25,7 @@ function ProductHomepage({ products }) {
                     <Card.Text
                       style={{ textAlign: "center", fontSize: "15px" }}
                     >
-                      {product.quanlitySold}
+                      {product.quantitySold} đã bán
                     </Card.Text>
                   </Card.Body>
                 </Card>
