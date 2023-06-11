@@ -20,9 +20,9 @@ function NewProductHomepage({ products }) {
                       {product.name}
                     </Card.Title>
                     <Card.Text style={{ color: "#e7b475", fontWeight: "500" }}>
-                      {product.price} VNĐ
+                      {product.price} đ
                     </Card.Text>
-                    <Card.Text style={{ fontSize: "15px" }}>
+                    <Card.Text style={{ textAlign: "end", fontSize: "14px" }}>
                       {product.quantitySold} đã bán
                     </Card.Text>
                   </Card.Body>
