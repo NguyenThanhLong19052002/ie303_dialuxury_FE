@@ -57,7 +57,7 @@ function AdminSidebar() {
             </li>
           </Link>
 
-          <Link to="/HoadonAdmin" style={{ textDecoration: "none" }}>
+          {/* <Link to="/HoadonAdmin" style={{ textDecoration: "none" }}>
             <li>
               <ReceiptIcon className={styles.icon} />
               <span>Phiếu Bán Hàng</span>
@@ -75,7 +75,7 @@ function AdminSidebar() {
               <BallotIcon className={styles.icon} />
               <span>Phiếu Dịch Vụ</span>
             </li>
-          </Link>
+          </Link> */}
 
           {/* <Link to="/paymentVerfication" style={{ textDecoration: "none" }}>
             <li>

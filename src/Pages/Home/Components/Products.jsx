@@ -16,15 +16,15 @@ function ProductHomepage({ products }) {
                 <Card style={{ background: "#f7f7f7", marginBottom: "30px" }}>
                   <Card.Body style={{ textAlign: "center" }}>
                     <Card.Img src={product.image}></Card.Img>
-                    <Card.Title style={{ fontWeight: "200" }}>
+                    <Card.Title
+                      style={{ fontWeight: "200", textDecoration: "none" }}
+                    >
                       {product.name}
                     </Card.Title>
                     <Card.Text style={{ color: "#e7b475", fontWeight: "500" }}>
-                      {product.price}
+                      {product.price} đ
                     </Card.Text>
-                    <Card.Text
-                      style={{ textAlign: "center", fontSize: "15px" }}
-                    >
+                    <Card.Text style={{ textAlign: "end", fontSize: "14px" }}>
                       {product.quantitySold} đã bán
                     </Card.Text>
                   </Card.Body>
